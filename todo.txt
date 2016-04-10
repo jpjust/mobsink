@@ -1,0 +1,8 @@
+- Usar threads pra tela não escurecer no Ubuntu
+- Uma thread por cluster para posicionamento dos sinks pode ajudar no uso de
+  processadores multi-core
+- Fazer a programação dos sinks (que nem já existe para sensores).
+- Colocar no XML os parâmetros de energia dos sensores.
+- Colocar no XML a configuração de mudança de peso das vias.
+- Quando só tem um sensor pra transmitir dados e mais de um sink, todos os
+  sinks ficam na mesma posição. Corrigir.
