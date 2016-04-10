@@ -386,7 +386,7 @@ void FrameGUI::OnToolBarClick(wxCommandEvent &event)
                      wxT("\tDaniel G. Costa <danielgcosta@uefs.br>\n\n") + \
                      wxT("NetMedia, State University of Feira de Santana, BA, Brazil\n\n") + \
                      wxT("http://netmedia.uefs.br/\n\n") + \
-                     wxT("http://just.pro.br/blog/multimobilesink/\n\n") + \
+                     wxT("http://just.pro.br/blog/mobsink/\n\n") + \
                      wxT("Toolbar icons made by Freepik from www.flaticon.com"),
                      APP_NAME,
                      wxICON_INFORMATION,

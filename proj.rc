@@ -23,10 +23,10 @@ BEGIN
             VALUE   "CompanyName",      "NetMedia\0"
             VALUE   "FileDescription",  "Simulator for Multiple Mobile Sinks\0"
             VALUE   "FileVersion",      "1.1\0"
-            VALUE   "InternalName",     "MultiMobileSink\0"
-            VALUE   "LegalCopyright",   "Copyright 2015 (c) NetMedia\0"
-            VALUE   "OriginalFilename", "MultiMobileSink.exe\0"
-            VALUE   "ProductName",      "Multiple Mobile Sinks Simulator\0"
+            VALUE   "InternalName",     "MobSink\0"
+            VALUE   "LegalCopyright",   "Copyright 2015-2016 (c) NetMedia\0"
+            VALUE   "OriginalFilename", "MobSink.exe\0"
+            VALUE   "ProductName",      "MobSink Multiple Sinks Simulator\0"
             VALUE   "ProductVersion",   "1.1\0"
         END
     END

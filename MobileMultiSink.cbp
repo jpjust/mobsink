@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="MobileMultiSink" />
+		<Option title="MobSink" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/MultiMobileSink" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/MobSink" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -26,7 +26,7 @@
 			</Target>
 			<Target title="Release">
 				<Option platforms="Unix;" />
-				<Option output="bin/Release/MultiMobileSink" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/MobSink" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -45,7 +45,7 @@
 			</Target>
 			<Target title="Release_Win32">
 				<Option platforms="Windows;" />
-				<Option output="bin/Release_Win32/MultiMobileSink" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release_Win32/MobSink" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release_Win32/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -74,7 +74,7 @@
 			</Target>
 			<Target title="Release_wxGTK2.8">
 				<Option platforms="Unix;" />
-				<Option output="bin/Release_wxGTK2.8/MultiMobileSink" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release_wxGTK2.8/MobSink" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release_wxGTK2.8/" />
 				<Option type="1" />
 				<Option compiler="gcc" />

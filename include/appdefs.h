@@ -2,7 +2,7 @@
 #define APPDEFS_H_INCLUDED
 
 // Application name and version
-#define APP_NAME        wxT("Multi Mobile Sinks Simulator")
+#define APP_NAME        wxT("MobSink Multiple Sinks Simulator")
 #define APP_VERSION     wxT("1.1")
 #define APP_VENDOR      wxT("NetMedia")
 #define APP_FULL_NAME   wxString::Format(wxT("%s %s %s"), APP_VENDOR, APP_NAME, APP_VERSION)

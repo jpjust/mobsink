@@ -32,12 +32,28 @@ PanelNetwork::PanelNetwork(wxFrame *parent)
 // Getters
 float PanelNetwork::GetWidth(void)
 {
-    return this->width;
+    // If there is a fixed size defined by XML file, use it.
+    if (fixed_size)
+        return this->width;
+    else
+    {
+        int max_x, max_y;
+        GetSize(&max_x, &max_y);
+        return max_x;
+    }
 }
 
 float PanelNetwork::GetHeight(void)
 {
-    return this->height;
+    // If there is a fixed size defined by XML file, use it.
+    if (fixed_size)
+        return this->width;
+    else
+    {
+        int max_x, max_y;
+        GetSize(&max_x, &max_y);
+        return max_y;
+    }
 }
 
 // To avoid flickering
@@ -180,6 +196,8 @@ void PanelNetwork::RunSim(int init, int s_time)
     // As a reference, for 1 day simulation, we will output at every 5 minutes.
     // This gives 288 output lines. So, let's calculate it proportionally.
     int output_rate = s_time / 288;
+    if (output_rate < 1)
+        output_rate = 1;
 
     // Get positioning method
     int sinkpos = GetSinkPos(init);
