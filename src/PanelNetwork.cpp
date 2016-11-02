@@ -262,6 +262,9 @@ void PanelNetwork::RunSim(int init, int s_time)
         // fixed movement.
         if ((network_changed) || (active != active_before) || (init == SINKPOS_HORIZONTAL) || (init == SINKPOS_VERTICAL))
         {
+            // Initialize means
+            InitializeMeans(init);
+
             // Reposition sinks
             wsn.PositionSinks(true, sinkpos);
             wsn.CreateLinks();

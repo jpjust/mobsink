@@ -68,7 +68,7 @@ bool Node::IsActive(void)
 void Node::SetRL(int RL)
 {
     this->RL = RL;
-    params_init.RL = RL;
+    //params_init.RL = RL;
 }
 
 void Node::SetCluster(Cluster *cluster)
@@ -239,8 +239,6 @@ double Node::SendData(void)
 // Make the node work for 1 second
 void Node::Work(void)
 {
-    GenerateData();
-
     // Here we must check for any change in node control
     map<int, struct control_params>::iterator it = node_control.find(time_elapsed);
     if (it != node_control.end())
@@ -254,6 +252,7 @@ void Node::Work(void)
     // Only after changing control we increment time.
     // That way we can let the sensor SendData for the GeneratedData
     // in this method.
+    GenerateData();
     time_elapsed++;
 }
 

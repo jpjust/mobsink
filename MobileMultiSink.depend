@@ -25576,3 +25576,183 @@
 	"Vertex.h"
 	<stdlib.h>
 
+1478105579 source:/home/just/codeblocks/mobsink/src/appdefs.cpp
+	"appdefs.h"
+
+1478105579 /home/just/codeblocks/mobsink/include/appdefs.h
+
+1478105579 source:/home/just/codeblocks/mobsink/src/Cluster.cpp
+	"Cluster.h"
+	<deque>
+	<cmath>
+
+1478105579 /home/just/codeblocks/mobsink/include/Cluster.h
+	"Node.h"
+	"Sink.h"
+	"Edge.h"
+	<vector>
+	<stdlib.h>
+
+1478113681 /home/just/codeblocks/mobsink/include/Node.h
+	"Point.h"
+	<stdlib.h>
+	<map>
+
+1478105579 /home/just/codeblocks/mobsink/include/Point.h
+
+1478105579 /home/just/codeblocks/mobsink/include/Sink.h
+	"Node.h"
+	<stdlib.h>
+
+1478105579 /home/just/codeblocks/mobsink/include/Edge.h
+	"Vertex.h"
+
+1478105579 /home/just/codeblocks/mobsink/include/Vertex.h
+	"Point.h"
+
+1478105579 source:/home/just/codeblocks/mobsink/src/Edge.cpp
+	<stdlib.h>
+	"Edge.h"
+
+1478105579 source:/home/just/codeblocks/mobsink/src/FrameGUI.cpp
+	"FrameGUI.h"
+	"Node.h"
+	"appdefs.h"
+	<stdlib.h>
+	<time.h>
+	<wx/utils.h>
+	"../res/app_icon.xpm"
+	"../res/tb_sensor.xpm"
+	"../res/tb_path.xpm"
+	"../res/tb_obstacle.xpm"
+	"../res/tb_grid.xpm"
+	"../res/tb_sensor_rand.xpm"
+	"../res/tb_random.xpm"
+	"../res/tb_rl.xpm"
+	"../res/tb_coord.xpm"
+	"../res/tb_links.xpm"
+	"../res/tb_batt.xpm"
+	"../res/tb_animate.xpm"
+	"../res/tb_new.xpm"
+	"../res/tb_run.xpm"
+	"../res/tb_about.xpm"
+	"../res/tb_help.xpm"
+
+1478105579 /home/just/codeblocks/mobsink/include/FrameGUI.h
+	<wx/wx.h>
+	"PanelNetwork.h"
+
+1478105579 /home/just/codeblocks/mobsink/include/PanelNetwork.h
+	<wx/wx.h>
+	"Network.h"
+	"Cluster.h"
+	"Point.h"
+	"Node.h"
+	"Sink.h"
+
+1478105579 /home/just/codeblocks/mobsink/include/Network.h
+	<wx/wx.h>
+	<vector>
+	"Cluster.h"
+	"Node.h"
+	"Obstacle.h"
+	"Path.h"
+	"Graph.h"
+
+1478105579 /home/just/codeblocks/mobsink/include/Obstacle.h
+	"Point.h"
+
+1478105579 /home/just/codeblocks/mobsink/include/Path.h
+	"Point.h"
+
+1478105579 /home/just/codeblocks/mobsink/include/Graph.h
+	<vector>
+	"Edge.h"
+	"Vertex.h"
+	"Point.h"
+
+1478105579 /home/just/codeblocks/mobsink/res/app_icon.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_sensor.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_path.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_obstacle.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_grid.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_sensor_rand.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_random.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_rl.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_coord.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_links.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_batt.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_animate.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_new.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_run.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_about.xpm
+
+1478105579 /home/just/codeblocks/mobsink/res/tb_help.xpm
+
+1478105579 source:/home/just/codeblocks/mobsink/src/Graph.cpp
+	"Graph.h"
+	"Path.h"
+	<stdio.h>
+
+1478105579 source:/home/just/codeblocks/mobsink/src/MMSApp.cpp
+	"MMSApp.h"
+	"FrameGUI.h"
+	<stdlib.h>
+
+1478105579 /home/just/codeblocks/mobsink/include/MMSApp.h
+	<wx/wx.h>
+
+1478105579 source:/home/just/codeblocks/mobsink/src/Network.cpp
+	"Network.h"
+	"Cluster.h"
+	<cmath>
+	<stdio.h>
+
+1478105579 source:/home/just/codeblocks/mobsink/src/Node.cpp
+	"Node.h"
+	<stdio.h>
+
+1478105579 source:/home/just/codeblocks/mobsink/src/Obstacle.cpp
+	"Obstacle.h"
+
+1478105579 source:/home/just/codeblocks/mobsink/src/Path.cpp
+	"Path.h"
+	<math.h>
+
+1478105579 source:/home/just/codeblocks/mobsink/src/Point.cpp
+	"Point.h"
+	<cmath>
+	<stdlib.h>
+
+1478105579 source:/home/just/codeblocks/mobsink/src/Sink.cpp
+	"Sink.h"
+	"Cluster.h"
+	<cmath>
+
+1478105579 source:/home/just/codeblocks/mobsink/src/Vertex.cpp
+	"Vertex.h"
+	<stdlib.h>
+
+1478113264 source:/home/just/codeblocks/mobsink/src/PanelNetwork.cpp
+	"PanelNetwork.h"
+	"FrameGUI.h"
+	"appdefs.h"
+	<deque>
+	<time.h>
+	<wx/dcbuffer.h>
+	<wx/xml/xml.h>
+
