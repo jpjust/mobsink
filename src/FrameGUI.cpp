@@ -129,7 +129,7 @@ FrameGUI::FrameGUI()
     wxBoxSizer *sizer_output_tbar1 = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer *sizer_output_tbar2 = new wxBoxSizer(wxHORIZONTAL);
 
-     // Output toolbar 1
+    // Output toolbar 1
     sizer_output_tbar1->Add(btnLoadXML, 1, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 5);
     sizer_output_tbar1->Add(btnSaveXML, 1, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 5);
 
@@ -155,11 +155,11 @@ FrameGUI::FrameGUI()
     SetAutoLayout(true);
     SetSize(800, 600);
 
-    #ifndef __WXMSW__
+#ifndef __WXMSW__
     SetIcon(wxIcon(app_icon_xpm));
-    #else
+#else
     SetIcon(wxIcon("aaaaaa"));
-    #endif
+#endif
 }
 
 // Return the RL in the textbox
@@ -279,7 +279,7 @@ void FrameGUI::SaveCSV(wxCommandEvent &event)
     if (!filename.empty())
     {
         if (wxFileExists(filename) &&
-           (wxMessageBox(wxT("File \"") + filename + wxT("\" already exists. Overwrite it?"), APP_NAME, wxYES_NO | wxICON_QUESTION) == wxNO))
+                (wxMessageBox(wxT("File \"") + filename + wxT("\" already exists. Overwrite it?"), APP_NAME, wxYES_NO | wxICON_QUESTION) == wxNO))
             return;
 
         pnNet->SaveCSV(filename);
@@ -308,7 +308,7 @@ void FrameGUI::SaveXML(wxCommandEvent &event)
     if (!filename.empty())
     {
         if (wxFileExists(filename) &&
-           (wxMessageBox(wxT("File \"") + filename + wxT("\" already exists. Overwrite it?"), APP_NAME, wxYES_NO | wxICON_QUESTION) == wxNO))
+                (wxMessageBox(wxT("File \"") + filename + wxT("\" already exists. Overwrite it?"), APP_NAME, wxYES_NO | wxICON_QUESTION) == wxNO))
             return;
 
         if (pnNet->SaveXML(filename) == false)
@@ -325,7 +325,7 @@ void FrameGUI::SavePNG(wxCommandEvent &event)
     if (!filename.empty())
     {
         if (wxFileExists(filename) &&
-           (wxMessageBox(wxT("File \"") + filename + wxT("\" already exists. Overwrite it?"), APP_NAME, wxYES_NO | wxICON_QUESTION) == wxNO))
+                (wxMessageBox(wxT("File \"") + filename + wxT("\" already exists. Overwrite it?"), APP_NAME, wxYES_NO | wxICON_QUESTION) == wxNO))
             return;
 
         if (pnNet->SavePNG(filename) == false)
@@ -405,4 +405,33 @@ void FrameGUI::OnToolBarClick(wxCommandEvent &event)
     default:
         break;
     }
+}
+
+// Start a simulation via command line arguments
+void FrameGUI::StartCmdlineSim(wxString file_net, wxString file_out, int n_sinks, int init)
+{
+if (pnNet == NULL)
+    wxPrintf(wxT("NULLLLLLLLLLLLLLLLLLLLL\n\n\n\n"));
+    // Load network file
+    if (pnNet->LoadXML(file_net) == false)
+        wxPrintf(wxT("There was an error trying to load \"%s\". Exiting...\n"), file_net.c_str());
+
+    // Run MMS
+    wxPrintf(wxT("Running initial positioning algorithm... "));
+    pnNet->RunMMS(n_sinks, init, false);
+    wxPrintf(wxT("Done!\n"));
+
+    // Run simulation
+    wxPrintf(wxT("\n----- Running simulation... -----\n"));
+    pnNet->RunSim(init, atoi(txtTime->GetValue().char_str()));
+    wxPrintf(wxT("\n----- Finished simulating!  -----\n\n"));
+
+    // Save results
+    wxPrintf(wxT("Saving results to \"%s\"... "), file_out.c_str());
+    if (wxFileExists(file_out))
+        wxPrintf(wxT("\nWARNING: File already exists. Overwritting... "));
+    pnNet->SaveCSV(file_out);
+    wxPrintf(wxT("Done!\n"));
+
+    Close();
 }

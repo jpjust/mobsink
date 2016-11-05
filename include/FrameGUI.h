@@ -38,6 +38,7 @@ public:
     void SetRange(float range);
     void SetTime(int time);
     void PrintOutput(wxString text);
+    void StartCmdlineSim(wxString file_net, wxString file_out, int n_sinks, int init);
 
     DECLARE_EVENT_TABLE()
 
