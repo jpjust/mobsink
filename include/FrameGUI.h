@@ -63,10 +63,6 @@ private:
     wxComboBox *comboInit;
     PanelNetwork *pnNet;
 
-    // Panels
-    wxPanel *pnMain;
-    wxPanel *pnOutput;
-
     // File dialogs paths
     wxString pathCSV;
     wxString pathXML;
