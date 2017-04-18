@@ -394,9 +394,9 @@ void FrameGUI::OnToolBarClick(wxCommandEvent &event)
         break;
 
     case ID_TBAR_HELP:
-        if (!wxLaunchDefaultBrowser(wxT("http://just.pro.br/blog/multimobilesink/")))
+        if (!wxLaunchDefaultBrowser(wxT("http://just.pro.br/blog/mobsink/")))
             wxMessageBox(wxString(wxT("Couldn't run your default web browser. To get help, visit:\n\n")) + \
-                         wxT("http://just.pro.br/blog/multimobilesink/"),
+                         wxT("http://just.pro.br/blog/mobsink/"),
                          APP_NAME,
                          wxICON_INFORMATION,
                          this);
