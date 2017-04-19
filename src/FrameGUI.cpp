@@ -1,3 +1,23 @@
+/*
+ * MobSink Frame GUI.
+ * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ *
+ * This file is part of MobSink.
+ *
+ * MobSink is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * MobSink is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MobSink.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "FrameGUI.h"
 #include "Node.h"
 #include "appdefs.h"
@@ -384,10 +404,11 @@ void FrameGUI::OnToolBarClick(wxCommandEvent &event)
                      wxT("Developed by:\n\n") + \
                      wxT("\tJoão Paulo Just Peixoto <just1982@gmail.com>\n") + \
                      wxT("\tDaniel G. Costa <danielgcosta@uefs.br>\n\n") + \
-                     wxT("NetMedia, State University of Feira de Santana, BA, Brazil\n\n") + \
-                     wxT("http://netmedia.uefs.br/\n\n") + \
+                     wxT("LARA, State University of Feira de Santana, BA, Brazil\n\n") + \
+                     wxT("http://lara.uefs.br/\n\n") + \
                      wxT("http://just.pro.br/blog/mobsink/\n\n") + \
-                     wxT("Toolbar icons made by Freepik from www.flaticon.com"),
+                     wxT("Toolbar icons made by Freepik from www.flaticon.com\n\n") + \
+					 wxT("This program is Free Software licensed under GPLv3."),
                      APP_NAME,
                      wxICON_INFORMATION,
                      this);
