@@ -1,6 +1,6 @@
 /*
  * MobSink network panel GUI.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -49,6 +49,14 @@
 #define COORD_Y_OFFSET  3
 #define FONT_SIZE 8
 
+// Default virtual size
+#define WIDTH_DEFAULT 1024
+#define HEIGHT_DEFAULT 1024
+
+// Scroll RATE
+#define SCROLL_X 10
+#define SCROLL_Y 10
+
 // Sink type enum
 enum
 {
@@ -68,7 +76,7 @@ enum panel_tools
     PANEL_TOOL_OBSTACLE,
 };
 
-class PanelNetwork: public wxPanel
+class PanelNetwork: public wxScrolled<wxPanel>
 {
 public:
     PanelNetwork(wxFrame *parent);

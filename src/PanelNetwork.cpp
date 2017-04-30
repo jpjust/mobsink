@@ -1,6 +1,6 @@
 /*
  * MobSink network panel GUI.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -36,9 +36,11 @@ END_EVENT_TABLE()
 
 // Constructor
 PanelNetwork::PanelNetwork(wxFrame *parent)
-    :wxPanel(parent)
+    :wxScrolled<wxPanel>(parent)
 {
-    Clear();
+	SetScrollRate(SCROLL_X, SCROLL_Y);
+	SetVirtualSize(WIDTH_DEFAULT, HEIGHT_DEFAULT);
+	Clear();
     showRL = false;
     showCoord = false;
     drawLines = false;
@@ -146,6 +148,7 @@ void PanelNetwork::InsertSink(Sink *newsink)
 void PanelNetwork::PaintEvent(wxPaintEvent & evt)
 {
     wxBufferedPaintDC dc(this);
+    PrepareDC(dc);
     dc.Clear();
     Render(dc);
 }
@@ -548,13 +551,14 @@ bool PanelNetwork::SavePNG(wxString filename)
 void PanelNetwork::MouseClick(wxMouseEvent &event)
 {
     Node *newnode = new Node();
+    wxPoint offset = GetViewStart();
 
     switch (tool)
     {
     case PANEL_TOOL_SENSOR:
         // Add a new node to the vector
-        newnode->SetX(event.GetX());
-        newnode->SetY(event.GetY());
+        newnode->SetX(event.GetX() + offset.x * SCROLL_X);
+        newnode->SetY(event.GetY() + offset.y * SCROLL_Y);
         newnode->SetRL(((FrameGUI *)GetParent())->GetRL());
 
         // Find the nearest cluster and add this node into it
@@ -566,7 +570,8 @@ void PanelNetwork::MouseClick(wxMouseEvent &event)
     case PANEL_TOOL_PATH:
         // Insert a new point for the path
         if (path_pa == NULL)
-            path_pa = new Point(event.GetX(), event.GetY());
+            path_pa = new Point(event.GetX() + offset.x * SCROLL_X,
+            		event.GetY() + offset.y * SCROLL_Y);
         else
         {
             Path p(*path_pa, mouse_point);
@@ -589,8 +594,8 @@ void PanelNetwork::MouseClick(wxMouseEvent &event)
 
         // Add a new obstacle to the vector
         Obstacle newobs;
-        newobs.SetX(event.GetX());
-        newobs.SetY(event.GetY());
+        newobs.SetX(event.GetX() + offset.x * SCROLL_X);
+        newobs.SetY(event.GetY() + offset.y * SCROLL_Y);
         newobs.SetRadius(radius);
 
         InsertObstacle(newobs);
@@ -603,14 +608,15 @@ void PanelNetwork::MouseClick(wxMouseEvent &event)
 // Grabs a mouse movement
 void PanelNetwork::MouseMove(wxMouseEvent &event)
 {
-    mouse_point.SetX(event.GetX());
-    mouse_point.SetY(event.GetY());
+	wxPoint offset = GetViewStart();
+    mouse_point.SetX(event.GetX() + offset.x * SCROLL_X);
+    mouse_point.SetY(event.GetY() + offset.y * SCROLL_Y);
 
     // Help making straight lines
     if (path_pa != NULL)
     {
-        int x_delta = event.GetX() - path_pa->GetX();
-        int y_delta = event.GetY() - path_pa->GetY();
+        int x_delta = (event.GetX() + offset.x * SCROLL_X) - path_pa->GetX();
+        int y_delta = (event.GetY() + offset.y * SCROLL_Y) - path_pa->GetY();
 
         if ((x_delta >= -3) && (x_delta <= 3))
             mouse_point.SetX(path_pa->GetX());
@@ -739,6 +745,12 @@ bool PanelNetwork::LoadXML(wxString filename)
     this->width = atof(node_net->GetAttribute(wxT("width"), wxT("0")).char_str());
     this->height = atof(node_net->GetAttribute(wxT("height"), wxT("0")).char_str());
     this->fixed_size = ((this->width > 0) && (this->height > 0));
+
+    // Adjust Panel size
+    if (this->fixed_size)
+    	SetVirtualSize(this->width, this->height);
+    else
+    	SetVirtualSize(WIDTH_DEFAULT, HEIGHT_DEFAULT);
 
     // Add sensors, obstacles and paths
     wxXmlNode *child = doc.GetRoot()->GetChildren();
