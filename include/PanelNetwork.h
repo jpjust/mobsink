@@ -28,8 +28,19 @@
 #include "Node.h"
 #include "Sink.h"
 
-// Drawing parameters
+// Drawing default colors
+#define MAP_BGCOLOR wxColor(192, 192, 192)
+#define MAP_FONTCOLOR wxColor(0, 0, 0)
+#define MAP_SENSORCOLOR wxColor(0, 0, 255)
+#define MAP_SENSORCOLORINACTIVE wxColor(255, 255, 255)
+#define MAP_SINKCOLOR wxColor(255, 0, 0)
+#define MAP_PATHCOLOR wxColor(255, 255, 0)
+#define MAP_PATHDIJKSTRA wxColor(127, 127, 255)
+#define MAP_OBSTACLE wxColor(255, 0, 0)
+#define MAP_BATTFG wxColor(0, 255, 0)
+#define MAP_BATTBG wxColor(255, 0, 0)
 
+// Drawing parameters
 #ifdef ARTICLE
 // To create article images, use:
 # define NODE_RADIUS     10

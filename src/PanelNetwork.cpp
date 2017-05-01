@@ -149,7 +149,6 @@ void PanelNetwork::PaintEvent(wxPaintEvent & evt)
 {
     wxBufferedPaintDC dc(this);
     PrepareDC(dc);
-    dc.Clear();
     Render(dc);
 }
 
@@ -404,7 +403,8 @@ void PanelNetwork::Render(wxDC &dc)
     dc.SetFont(wxFont(FONT_SIZE, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
 
     // Paint canvas
-    dc.FloodFill(0, 0, wxColor(255, 255, 255), wxFLOOD_BORDER);
+    dc.SetBackground(wxBrush(MAP_BGCOLOR));
+    dc.Clear();
 
     vector<Node *> nodes = wsn.GetNodes();
     vector<Cluster *> clusters = wsn.GetClusters();
@@ -413,12 +413,12 @@ void PanelNetwork::Render(wxDC &dc)
 
     // Draw the obstacles (they must be drawn first to stay under all other stuff)
     dc.SetPen(wxPen(wxColor(0, 0, 0), 1));
-    dc.SetBrush(wxBrush(wxColor(255, 255, 0)));
+    dc.SetBrush(wxBrush(MAP_OBSTACLE));
     for (unsigned int i = 0; i < obstacles.size(); i++)
         dc.DrawCircle(wxPoint(obstacles.at(i).GetX(), obstacles.at(i).GetY()), obstacles.at(i).GetRadius());
 
     // Draw the paths
-    dc.SetPen(wxPen(wxColor(127, 0, 0), 3));
+    dc.SetPen(wxPen(MAP_PATHCOLOR, 3));
     for (unsigned int i = 0; i < paths.size(); i++)
     {
         // Draw lines if the node is alive and has a next hop (lines must be drawn first, so they get under the sensors)
@@ -438,7 +438,7 @@ void PanelNetwork::Render(wxDC &dc)
     }
 
     // Draw the Dijkstra's paths
-    dc.SetPen(wxPen(wxColor(255, 0, 0), 3));
+    dc.SetPen(wxPen(MAP_PATHDIJKSTRA, 3));
     for (unsigned int k = 0; k < clusters.size(); k++)
     {
         vector<Point> last_path = clusters.at(k)->GetLastPath();
@@ -456,7 +456,7 @@ void PanelNetwork::Render(wxDC &dc)
         }
     }
 
-    // If using path tool, draw a path when needed
+    // If using path tool, draw a path when needed (using same color as Dijkstra's paths)
     if (path_pa != NULL)
     {
         wxPoint points[2];
@@ -473,9 +473,9 @@ void PanelNetwork::Render(wxDC &dc)
     {
         // Set style and color
         if (nodes.at(i)->IsActive())
-            dc.SetBrush(*wxBLUE_BRUSH);
+            dc.SetBrush(MAP_SENSORCOLOR);
         else
-            dc.SetBrush(*wxWHITE_BRUSH);
+            dc.SetBrush(MAP_SENSORCOLORINACTIVE);
 
         // Draw lines if the node is alive and has a next hop (lines must be drawn first, so they get under the sensors)
         if (drawLines && clusters.size() > 0 && nodes.at(i)->GetPower() > 0 && nodes.at(i)->GetNextHop() != NULL)
@@ -502,16 +502,16 @@ void PanelNetwork::Render(wxDC &dc)
             e_green = ENERGY_SIZE * nodes.at(i)->GetPower() / POWER;
             e_red = ENERGY_SIZE - e_green;
 
-            dc.SetBrush(*wxGREEN_BRUSH);
+            dc.SetBrush(MAP_BATTFG);
             dc.DrawRectangle(wxPoint(nodes.at(i)->GetX() + ENERGY_X_OFFSET, nodes.at(i)->GetY() + ENERGY_Y_OFFSET), wxSize(e_green, 4));
 
-            dc.SetBrush(*wxRED_BRUSH);
+            dc.SetBrush(MAP_BATTBG);
             dc.DrawRectangle(wxPoint(nodes.at(i)->GetX() + ENERGY_X_OFFSET + e_green, nodes.at(i)->GetY() + ENERGY_Y_OFFSET), wxSize(e_red, 4));
         }
     }
 
     // Draw the sinks
-    dc.SetBrush(*wxRED_BRUSH);
+    dc.SetBrush(MAP_SINKCOLOR);
     dc.SetPen(wxPen(wxColor(0, 0, 0), 1));
     for (unsigned int i = 0; i < clusters.size(); i++)
     {
