@@ -1,6 +1,6 @@
 /*
  * Path class implementation.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -24,17 +24,19 @@
 // Constructors
 Path::Path()
 {
-    // Do nothing
+	ResetControlParams();
 }
 
 Path::Path(Point a, Point b)
 {
+	ResetControlParams();
     SetPointA(a);
     SetPointB(b);
 }
 
 Path::Path(float xa, float ya, float xb, float yb)
 {
+	ResetControlParams();
     Point a(xa, ya);
     Point b(xb, yb);
     SetPointA(a);
@@ -191,4 +193,25 @@ Point Path::GetIntersection(Path r, bool &exist)
 
     exist = (HasPoint(p) && r.HasPoint(p));
     return p;
+}
+
+// Reset control parameters
+void Path::ResetControlParams(void)
+{
+	InsertControl(0, 1, false);
+}
+
+// Insert control settings at a specific time
+void Path::InsertControl(int time, int weight, bool blocked)
+{
+    struct path_control_params p;
+    p.weight = weight;
+    p.blocked = blocked;
+    this->path_control.insert(pair<int, struct path_control_params>(time, p));
+}
+
+// Return a pointer to this path's path control
+map<int, struct path_control_params> *Path::GetPathControl(void)
+{
+	return &(this->path_control);
 }

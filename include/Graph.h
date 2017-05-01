@@ -1,6 +1,6 @@
 /*
  * Graph implementation for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -25,6 +25,7 @@
 #include "Edge.h"
 #include "Vertex.h"
 #include "Point.h"
+#include "Path.h"
 
 using namespace std;
 
@@ -44,10 +45,10 @@ public:
     bool DeleteVertex(Vertex v);
     int FindEdge(Edge e);
     bool HasEdge(Edge e);
-    Edge *InsertEdge(Vertex *src, Vertex *dst, int weight = 1);
+    Edge *InsertEdge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control = NULL);
     bool DeleteEdge(Edge e);
 
-    vector<Point> Dijkstra(Vertex *src, Vertex *dst);
+    vector<Point> Dijkstra(Vertex *src, Vertex *dst, int t = 0);
 
     void Clear(void);
 

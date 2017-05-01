@@ -285,10 +285,12 @@ void PanelNetwork::RunSim(int init, int s_time)
         if ((network_changed) || (active != active_before) || (init == SINKPOS_HORIZONTAL) || (init == SINKPOS_VERTICAL))
         {
             // Initialize means
-            InitializeMeans(init);
+            //InitializeMeans(init);
+
+
 
             // Reposition sinks
-            wsn.PositionSinks(true, sinkpos);
+            wsn.PositionSinks(true, sinkpos, t);
             wsn.CreateLinks();
 
             // This last part should be executed only if number of active nodes has changed
@@ -550,16 +552,16 @@ bool PanelNetwork::SavePNG(wxString filename)
 // Grabs a mouse click and add a new node to the vector
 void PanelNetwork::MouseClick(wxMouseEvent &event)
 {
-    Node *newnode = new Node();
     wxPoint offset = GetViewStart();
+    Node *newnode;
 
     switch (tool)
     {
     case PANEL_TOOL_SENSOR:
         // Add a new node to the vector
+    	newnode = new Node(0, 0, ((FrameGUI *)GetParent())->GetRL());	// Default RL must be set at construction
         newnode->SetX(event.GetX() + offset.x * SCROLL_X);
         newnode->SetY(event.GetY() + offset.y * SCROLL_Y);
-        newnode->SetRL(((FrameGUI *)GetParent())->GetRL());
 
         // Find the nearest cluster and add this node into it
         newnode->SetCluster(wsn.GetNearestClusterFrom(*newnode));
@@ -822,6 +824,25 @@ bool PanelNetwork::LoadXML(wxString filename)
             float yb = atof(child->GetAttribute(wxT("yb"), wxT("0")).char_str());
 
             Path newpath(xa, ya, xb, yb);
+
+            // Get path traffic changes
+			wxXmlNode *nodechild = child->GetChildren();
+			while (nodechild)
+			{
+				if (nodechild->GetName() == wxT("traffic"))
+				{
+					int stime = atoi(nodechild->GetAttribute(wxT("time"), wxT("0")).char_str());
+					int weight = atoi(nodechild->GetAttribute(wxT("weight"), wxT("1")).char_str());
+
+					bool blocked = nodechild->GetAttribute(wxT("blocked"), wxT("true")) == wxT("true") ? true : false;
+
+					newpath.InsertControl(stime, weight, blocked);
+				}
+
+				// Get next control change
+				nodechild = nodechild->GetNext();
+			}
+
             InsertPath(newpath);
         }
 
@@ -838,6 +859,12 @@ bool PanelNetwork::SaveXML(wxString filename)
 {
     wxXmlDocument doc;
     wxXmlNode *root = new wxXmlNode(NULL, wxXML_ELEMENT_NODE, wxT("network"));
+
+    // Insert map size
+    int width, height;
+    GetVirtualSize(&width, &height);
+    root->AddAttribute(wxT("width"), wxString::Format(wxT("%d"), width));
+    root->AddAttribute(wxT("height"), wxString::Format(wxT("%d"), height));
 
     // Insert the sensor nodes in the root XML node
     vector<Node *> nodes = wsn.GetNodes();

@@ -1,6 +1,6 @@
 /*
  * Nodes modeling for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -64,7 +64,7 @@
 using namespace std;
 
 // Struct to define control parameters
-struct control_params
+struct node_control_params
 {
     int RL;
     bool active;
@@ -104,7 +104,6 @@ public:
     double SendData(void);
     void Work(void);
     void InsertControl(int time, int RL, bool active);
-    //int SendAllData(void);
 
 private:
     float x;
@@ -120,8 +119,8 @@ private:
     double tx;
     bool active;
     bool changed;
-    struct control_params params_init;
-    map<int, struct control_params> node_control;    // Key: time in seconds
+    struct node_control_params params_init;
+    map<int, struct node_control_params> node_control;    // Key: time in seconds
 
     // TODO: include this in XML file
     int pkt_rate[16] = {0, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 30, 30, 30, 30, 40};

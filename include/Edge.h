@@ -1,6 +1,6 @@
 /*
  * Graph's Edge class for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -22,6 +22,7 @@
 #define EDGE_H
 
 #include "Vertex.h"
+#include "Path.h"
 
 // Edge exceptions
 enum edge_exception {
@@ -33,17 +34,21 @@ enum edge_exception {
 class Edge
 {
 public:
-    Edge(Vertex *src, Vertex *dst) throw(edge_exception);
+    Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control = NULL) throw(edge_exception);
     bool operator==(Edge e);
 
     Vertex *GetSource(void);
     Vertex *GetDestination(void);
     void SetSource(Vertex *src) throw(edge_exception);
     void SetDestination(Vertex *dst) throw(edge_exception);
+    void SetPathControl(map<int, struct path_control_params> *path_control);
+    map<int, struct path_control_params> *GetPathControl(void);
 
+    int GetLenght(int time = 0);
 private:
     Vertex *src;
     Vertex *dst;
+    map<int, struct path_control_params> *path_control;
 };
 
 #endif // EDGE_H

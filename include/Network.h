@@ -1,6 +1,6 @@
 /*
  * MobSink Network modeling.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -74,7 +74,7 @@ class Network
         void MeansInitializeRandom(void);
         void MeansInitializeJust(void);
         void RunKmeans(void);
-        bool PositionSinks(bool use_runtime_RL, int sinkpos);
+        bool PositionSinks(bool use_runtime_RL, int sinkpos, int t = 0);
         Cluster *GetNearestClusterFrom(Point p);
         void CreateLinks(void);
         void CheckObstacles(int k);

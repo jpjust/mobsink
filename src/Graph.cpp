@@ -1,6 +1,6 @@
 /*
  * Graph implementation for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -88,11 +88,12 @@ Vertex *Graph::InsertVertexAndConnect(Point p)
     vector<Edge *> edges = GetEdges();
     for (unsigned k = 0; k < edges.size(); k++)
     {
-        // If v is already a vertex of this edge, skip
+        // If y is already a vertex of this edge, skip
         if ((*edges.at(k)->GetSource() == *y) || (*edges.at(k)->GetDestination() == *y))
             continue;
 
         Path r(edges.at(k)->GetSource()->GetPoint(), edges.at(k)->GetDestination()->GetPoint());
+        map<int, struct path_control_params> *path_control = edges.at(k)->GetPathControl();
 
         // This edge has point p on it?
         if (r.HasPoint(p))
@@ -112,8 +113,8 @@ Vertex *Graph::InsertVertexAndConnect(Point p)
             // At last, delete the previously added edged formed by (v, w) and add the edges
             // formed by (v, y) and (y, w);
             DeleteEdge(*edges.at(k));
-            InsertEdge(v, y);
-            InsertEdge(y, w);
+            InsertEdge(v, y, path_control);
+            InsertEdge(y, w, path_control);
         }
     }
 
@@ -156,9 +157,9 @@ bool Graph::HasEdge(Edge e)
 }
 
 // Insert a new edge
-Edge *Graph::InsertEdge(Vertex *src, Vertex *dst, int weight)
+Edge *Graph::InsertEdge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control)
 {
-    Edge *e = new Edge(src, dst);
+	Edge *e = new Edge(src, dst, path_control);
     int i;
 
     if ((i = FindEdge(*e)) == -1)
@@ -207,15 +208,16 @@ void Graph::Clear(void)
     }
 }
 
-// Run Dijkstra's algorithm to find the best path from src to dst
-vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst)
+// Run Dijkstra's algorithm to find the best path from src to dst at a specific time
+vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
 {
     vector<Point> path;
     if ((src == NULL) || (dst == NULL) || (src == dst))
         return path;
 
     // Build an adjacency list for the graph
-    vector<Vertex *> adj[vertices.size()];
+    //vector<Vertex *> adj[vertices.size()];
+    vector<Edge *> adj[vertices.size()];
     int cur = 0;
     int vleft = vertices.size();
 
@@ -233,14 +235,13 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst)
         {
             // Check if the current vertex is part of the current edge
             if (*edges.at(j)->GetSource() == *vertices.at(i))
-                adj[i].push_back(edges.at(j)->GetDestination());
+            	adj[i].push_back(new Edge(edges.at(j)->GetSource(), edges.at(j)->GetDestination(), edges.at(i)->GetPathControl()));
             else if (*edges.at(j)->GetDestination() == *vertices.at(i))
-                adj[i].push_back(edges.at(j)->GetSource());
+            	adj[i].push_back(new Edge(edges.at(j)->GetDestination(), edges.at(j)->GetSource(), edges.at(i)->GetPathControl()));
         }
     }
 
     // Initialize vertices
-
     vertices.at(cur)->Dijkstra_SetDist(0);
 
     // Run Dijkstra
@@ -253,16 +254,16 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst)
         for (unsigned int i = 0; i < adj[cur].size(); i++)
         {
             // Don't check against visited vertices
-            if (adj[cur].at(i)->Dijkstra_GetVisited() == true)
+            if (adj[cur].at(i)->GetDestination()->Dijkstra_GetVisited() == true)
                 continue;
 
             // Compare the distances
-            new_dist = vertices.at(cur)->Dijkstra_GetDist() + vertices.at(cur)->GetPoint().Distance(adj[cur].at(i)->GetPoint());
-            if (new_dist < adj[cur].at(i)->Dijkstra_GetDist())
+            new_dist = vertices.at(cur)->Dijkstra_GetDist() + adj[cur].at(i)->GetLenght(t);
+            if (new_dist < adj[cur].at(i)->GetDestination()->Dijkstra_GetDist())
             {
                 // The new path is better. Update!
-                adj[cur].at(i)->Dijkstra_SetDist(new_dist);
-                adj[cur].at(i)->Dijkstra_SetBefore(vertices.at(cur));
+                adj[cur].at(i)->GetDestination()->Dijkstra_SetDist(new_dist);
+                adj[cur].at(i)->GetDestination()->Dijkstra_SetBefore(vertices.at(cur));
             }
         }
 

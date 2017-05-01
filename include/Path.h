@@ -1,6 +1,6 @@
 /*
  * Path class declarations.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -22,6 +22,16 @@
 #define PATH_H
 
 #include "Point.h"
+#include <map>
+
+using namespace std;
+
+// Struct to define control parameters
+struct path_control_params
+{
+    int weight;
+    bool blocked;
+};
 
 // This class represents a path for the sinks
 class Path
@@ -30,6 +40,7 @@ public:
     Path();
     Path(Point a, Point b);
     Path(float xa, float ya, float xb, float yb);
+    void Reset(void);
 
     Point GetPointA(void);
     Point GetPointB(void);
@@ -42,10 +53,19 @@ public:
     Point GetProjection(Point p);
     Point GetNearestPoint(Point p);
     Point GetIntersection(Path r, bool &exist);
+    void InsertControl(int time, int weight, bool blocked);
+    map<int, struct path_control_params> *GetPathControl(void);
 
 private:
+    void ResetControlParams(void);
+
     Point a;
     Point b;
+    int weight;
+    bool blocked;
+    struct path_control_params params_init;
+    map<int, struct path_control_params> path_control;    // Key: time in seconds
+
 };
 
 #endif // PATH_H

@@ -1,6 +1,6 @@
 /*
  * MobSink Frame GUI.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -221,6 +221,24 @@ void FrameGUI::PrintOutput(wxString text)
 // Clear the map
 void FrameGUI::Clear(wxCommandEvent &event)
 {
+	// Get current map size
+	int width, height;
+	pnNet->GetVirtualSize(&width, &height);
+
+	// Ask for a new map size
+	wxString map_size = wxString::Format(wxT("%dx%d"), width, height);
+	map_size = wxGetTextFromUser(wxT("Enter new map size:"), APP_NAME, map_size);
+
+	// Check new map size
+	sscanf(map_size.c_str(), "%dx%d", &width, &height);
+
+	if ((width <= 0) || (height <= 0))
+	{
+		wxMessageBox(wxT("Invalid map size!"), APP_NAME, wxICON_ERROR);
+		return;
+	}
+
+	pnNet->SetVirtualSize(width, height);
     pnNet->Clear();
 }
 

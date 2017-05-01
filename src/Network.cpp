@@ -480,8 +480,8 @@ void Network::RunKmeans(void)
     while (delta_pos > 0);
 }
 
-// Position the sinks and return whenever any of them has changed
-bool Network::PositionSinks(bool use_runtime_RL, int sinkpos)
+// Position the sinks and return whenever any of them has changed (use current time to calculate Dijkstra's path)
+bool Network::PositionSinks(bool use_runtime_RL, int sinkpos, int t)
 {
     // Variables
     int x[2], y[2];
@@ -606,7 +606,7 @@ bool Network::PositionSinks(bool use_runtime_RL, int sinkpos)
             if (*src != *dst)
             {
                 hasChanged = true;
-                clusters.at(k)->SetLastPath(G.Dijkstra(src, dst));
+                clusters.at(k)->SetLastPath(G.Dijkstra(src, dst, t));
 
                 // If there are restricted paths, use Dijkstra's distance
                 // Otherwise, use moved distance
@@ -788,7 +788,7 @@ void Network::BuildGraph(void)
     {
         Vertex *v = G.InsertVertex(paths.at(i).GetPointA());
         Vertex *w = G.InsertVertex(paths.at(i).GetPointB());
-        G.InsertEdge(v, w);
+        G.InsertEdge(v, w, paths.at(i).GetPathControl());
     }
 
     // For each intersection, add its position as a vertex

@@ -1,6 +1,6 @@
 /*
  * Nodes modeling for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -88,7 +88,6 @@ bool Node::IsActive(void)
 void Node::SetRL(int RL)
 {
     this->RL = RL;
-    //params_init.RL = RL;
 }
 
 void Node::SetCluster(Cluster *cluster)
@@ -260,10 +259,10 @@ double Node::SendData(void)
 void Node::Work(void)
 {
     // Here we must check for any change in node control
-    map<int, struct control_params>::iterator it = node_control.find(time_elapsed);
+    map<int, struct node_control_params>::iterator it = node_control.find(time_elapsed);
     if (it != node_control.end())
     {
-        struct control_params p = it->second;
+        struct node_control_params p = it->second;
         SetRL(p.RL);
         this->active = p.active;
         this->changed = true;
@@ -279,8 +278,8 @@ void Node::Work(void)
 // Insert control settings at a specific time
 void Node::InsertControl(int time, int RL, bool active)
 {
-    struct control_params p;
+    struct node_control_params p;
     p.RL = RL;
     p.active = active;
-    this->node_control.insert(pair<int, struct control_params>(time, p));
+    this->node_control.insert(pair<int, struct node_control_params>(time, p));
 }

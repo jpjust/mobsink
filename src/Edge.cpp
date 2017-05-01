@@ -1,6 +1,6 @@
 /*
  * Graph's Edge class for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -22,12 +22,13 @@
 #include "Edge.h"
 
 // Default constructor
-Edge::Edge(Vertex *src, Vertex *dst) throw(edge_exception)
+Edge::Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control) throw(edge_exception)
 {
     try
     {
         SetSource(src);
         SetDestination(dst);
+        SetPathControl(path_control);
     }
     catch(edge_exception e)
     {
@@ -66,4 +67,35 @@ void Edge::SetDestination(Vertex *dst) throw(edge_exception)
         this->dst = dst;
     else
         throw EX_EDGE_INVALID_DST;
+}
+
+void Edge::SetPathControl(map<int, struct path_control_params> *path_control)
+{
+	this->path_control = path_control;
+}
+
+map<int, struct path_control_params> *Edge::GetPathControl(void)
+{
+	return this->path_control;
+}
+
+// Return the lenght of this edge
+int Edge::GetLenght(int time)
+{
+	if (path_control)
+	{
+		// Search for the last change in this path
+		for (unsigned int i = time; i >= 0; i--)
+		{
+			if (this->path_control->find(i) == this->path_control->end())
+				continue;
+
+			if (this->path_control->at(i).blocked)
+				return (unsigned int)9999999999;
+			else
+				return this->src->GetPoint().Distance(this->dst->GetPoint()) * this->path_control->at(i).weight;
+		}
+	}
+
+	return this->src->GetPoint().Distance(this->dst->GetPoint());
 }
