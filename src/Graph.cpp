@@ -235,9 +235,9 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
         {
             // Check if the current vertex is part of the current edge
             if (*edges.at(j)->GetSource() == *vertices.at(i))
-            	adj[i].push_back(new Edge(edges.at(j)->GetSource(), edges.at(j)->GetDestination(), edges.at(i)->GetPathControl()));
+            	adj[i].push_back(new Edge(edges.at(j)->GetSource(), edges.at(j)->GetDestination(), edges.at(j)->GetPathControl()));
             else if (*edges.at(j)->GetDestination() == *vertices.at(i))
-            	adj[i].push_back(new Edge(edges.at(j)->GetDestination(), edges.at(j)->GetSource(), edges.at(i)->GetPathControl()));
+            	adj[i].push_back(new Edge(edges.at(j)->GetDestination(), edges.at(j)->GetSource(), edges.at(j)->GetPathControl()));
         }
     }
 
