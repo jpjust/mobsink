@@ -288,8 +288,9 @@ void FrameGUI::GridSensors(wxCommandEvent &event)
     }
 
     // Height and width
-    int max_x = pnNet->GetWidth();
-    int max_y = pnNet->GetHeight();
+    int max_x;
+    int max_y;
+    pnNet->GetVirtualSize(&max_x, &max_y);
 
     // Get the list of sensors
     vector<Node *> sensors = Network::GridNodes(n_nodes, GetRL(), max_x, max_y);

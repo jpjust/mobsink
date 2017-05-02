@@ -111,7 +111,7 @@ Point PanelNetwork::GetRandomPosition(void)
         max_y = height;
     }
     else
-        GetSize(&max_x, &max_y);
+        GetVirtualSize(&max_x, &max_y);
 
     int x = rand() % max_x;
     int y = rand() % max_y;
