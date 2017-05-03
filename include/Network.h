@@ -49,7 +49,6 @@ class Network
 {
     public:
         Network();
-        //void *Entry(void);
 
         vector<Cluster *> GetClusters(void);
         vector<Node *> GetNodes(void);
@@ -92,6 +91,7 @@ class Network
         int sink_move_boundary;
         float txrange;
         Graph G;
+        bool graph_ready;
 };
 
 #endif // NETWORK_H

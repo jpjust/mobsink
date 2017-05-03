@@ -27,6 +27,7 @@
 // Constructor
 Network::Network()
 {
+	this->graph_ready = false;
 	this->txrange = 0;
 	this->static_sinks = false;
     this->sink_move_boundary = 0;
@@ -125,6 +126,7 @@ void Network::Clear(void)
 
     obstacles.clear();
     paths.clear();
+    G.Clear();
 }
 
 // Insert a new node into the nodes vector
@@ -143,6 +145,7 @@ void Network::InsertObstacle(Obstacle o)
 void Network::InsertPath(Path p)
 {
     paths.push_back(p);
+    this->graph_ready = false;
 }
 
 // Create a new cluster and move its sink
@@ -782,6 +785,9 @@ void Network::CheckPaths(int k)
 // Build a graph using network objects (sinks and paths)
 void Network::BuildGraph(void)
 {
+	if (this->graph_ready)
+		return;
+
     // Clear the graph
     ClearGraph();
 
@@ -862,10 +868,13 @@ void Network::BuildGraph(void)
     printf("Edges: %lu\n\n", e.size());
     printf("Graph building finished!\n\n");
 #endif // DEBUG
+
+    this->graph_ready = true;
 }
 
 // Clear the graph previously built
 void Network::ClearGraph(void)
 {
     G.Clear();
+    this->graph_ready = false;
 }

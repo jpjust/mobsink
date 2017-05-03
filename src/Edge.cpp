@@ -30,7 +30,7 @@ Edge::Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_
         SetDestination(dst);
         SetPathControl(path_control);
     }
-    catch(edge_exception e)
+    catch(edge_exception *e)
     {
         throw;
     }

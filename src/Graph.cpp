@@ -222,7 +222,7 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
         return path;
 
     // Initialize vertices and find source
-    int cur, vleft = vertices.size();
+    int cur = 0, vleft = vertices.size();
     for (unsigned int i = 0; i < vertices.size(); i++)
     {
         vertices.at(i)->Dijkstra_Initialize();

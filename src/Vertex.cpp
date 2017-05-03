@@ -24,11 +24,12 @@
 // Default constructor
 Vertex::Vertex(void)
 {
-    // Does nothing
+    Dijkstra_Initialize();
 }
 
 Vertex::Vertex(Point p)
 {
+	Dijkstra_Initialize();
     SetPoint(p);
 }
 
@@ -107,6 +108,8 @@ bool Vertex::DeleteEdge(Edge e)
         adj.erase(adj.begin() + p);
         return true;
     }
+
+    return false;
 }
 
 // Dijkstra's algorithm specific getters and setters

@@ -242,17 +242,27 @@ void PanelNetwork::RunSim(int init, int s_time)
     parent->PrintOutput(wxString::Format(wxT("Starting simulations with %lu sensors and %lu sinks until %d seconds...\n"),
                                          nodes.size(), wsn.GetClusters().size(), s_time));
 
+    // Get time
+    time_begin = time(NULL);
+
+    // Build the network graph
+    parent->PrintOutput(wxString::Format(wxT("Building graph... ")));
+    wxMilliSleep(1);
+    PaintNow();
+    wsn.BuildGraph();
+
+    // Print graph building time
+    time_end = time(NULL);
+    timesplit((unsigned int)(time_end - time_begin), time_h, time_m, time_s);
+    parent->PrintOutput(wxString::Format(wxT("done! (%02d:%02d:%02d)\n"), time_h, time_m, time_s));
+
+    // Data header
     if (animate)
         parent->PrintOutput(wxString::Format(wxT("t = 0, J = 0, Active: %lu\n"), nodes.size()));
 
     details.Append(wxString::Format(wxT("%d;%.2f;%d\n"), t, energy, active));
 
-    // Get time
-    time_begin = time(NULL);
-
-    // Build the network graph
-    wsn.BuildGraph();
-
+    // Start simulation
     do
     {
         // First, make every node generate data and insert it in the nodes to transmit vector
@@ -284,11 +294,6 @@ void PanelNetwork::RunSim(int init, int s_time)
         // fixed movement.
         if ((network_changed) || (active != active_before) || (init == SINKPOS_HORIZONTAL) || (init == SINKPOS_VERTICAL))
         {
-            // Initialize means
-            //InitializeMeans(init);
-
-
-
             // Reposition sinks
             wsn.PositionSinks(true, sinkpos, t);
             wsn.CreateLinks();
@@ -342,9 +347,6 @@ void PanelNetwork::RunSim(int init, int s_time)
         t++;
     }
     while ((t <= s_time));
-
-    // Clear the network graph
-    wsn.ClearGraph();
 
     // Get time
     time_end = time(NULL);
@@ -823,7 +825,7 @@ bool PanelNetwork::LoadXML(wxString filename)
             float xb = atof(child->GetAttribute(wxT("xb"), wxT("0")).char_str());
             float yb = atof(child->GetAttribute(wxT("yb"), wxT("0")).char_str());
 			wxString flow_str = child->GetAttribute(wxT("flow"), wxT(""));
-			int flow;
+			pathflow flow;
 			if (flow_str == wxT("ab"))
 				flow = PATHFLOW_AB;
 			else if (flow_str == wxT("ba"))
@@ -905,6 +907,20 @@ bool PanelNetwork::SaveXML(wxString filename)
         newnode->AddAttribute(wxT("ya"), wxString::Format(wxT("%f"), paths.at(i).GetPointA().GetY()));
         newnode->AddAttribute(wxT("xb"), wxString::Format(wxT("%f"), paths.at(i).GetPointB().GetX()));
         newnode->AddAttribute(wxT("yb"), wxString::Format(wxT("%f"), paths.at(i).GetPointB().GetY()));
+
+        switch (paths.at(i).GetFlow())
+        {
+        case PATHFLOW_AB:
+        	newnode->AddAttribute(wxT("flow"), wxT("ab"));
+        	break;
+
+        case PATHFLOW_BA:
+        	newnode->AddAttribute(wxT("flow"), wxT("ba"));
+        	break;
+
+        case PATHFLOW_BI:
+        	break;
+        }
     }
 
     doc.SetRoot(root);
