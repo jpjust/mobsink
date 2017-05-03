@@ -280,10 +280,16 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
     // Return the set of Edges in the path
     Vertex *v = dst;
 
-    while (v != NULL)
+    // If the destination vertex has no parent, it means that this route
+    // is impossible
+    if (v->Dijkstra_GetBefore() != NULL)
     {
-        path.push_back(v->GetPoint());
-        v = v->Dijkstra_GetBefore();
+		// Build a route
+		while (v != NULL)
+		{
+			path.push_back(v->GetPoint());
+			v = v->Dijkstra_GetBefore();
+		}
     }
 
     return path;

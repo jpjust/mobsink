@@ -610,15 +610,28 @@ bool Network::PositionSinks(bool use_runtime_RL, int sinkpos, int t)
             // Check if sink has moved
             if (*src != *dst)
             {
-                hasChanged = true;
-                clusters.at(k)->SetLastPath(G.Dijkstra(src, dst, t));
-
                 // If there are restricted paths, use Dijkstra's distance
                 // Otherwise, use moved distance
-                if (dst->Dijkstra_GetVisited())
-                    clusters.at(k)->IncrementDist(dst->Dijkstra_GetDist());
+            	if (paths.size() > 0)
+            	{
+            		clusters.at(k)->SetLastPath(G.Dijkstra(src, dst, t));
+            		if ((t == 0) || (dst->Dijkstra_GetVisited()))
+            		{
+						clusters.at(k)->IncrementDist(dst->Dijkstra_GetDist());
+		                hasChanged = true;
+            		}
+            		else
+            		{
+            			// After runing Dijkstra's algorithm, we detect an impossible route
+            			// In this case, this movement is not allowed
+            			clusters.at(k)->MoveSink(prev_pos.at(k).GetX(), prev_pos.at(k).GetY());
+            		}
+            	}
                 else
+                {
                     clusters.at(k)->IncrementDist(delta_post);
+                    hasChanged = true;
+                }
             }
         }
 
