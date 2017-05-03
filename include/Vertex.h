@@ -1,6 +1,6 @@
 /*
  * Graph's Vertex class for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -22,6 +22,12 @@
 #define VERTEX_H
 
 #include "Point.h"
+#include "Edge.h"
+#include <vector>
+
+using namespace std;
+
+class Edge;
 
 // This class represents a vertex in a graph
 class Vertex
@@ -34,6 +40,12 @@ public:
 
     Point GetPoint(void);
     void SetPoint(Point p);
+    vector<Edge *> GetNeightboors(void);
+
+    int FindEdge(Edge e);
+    bool HasEdge(Edge e);
+    bool InsertEdge(Edge *e);
+    bool DeleteEdge(Edge e);
 
     // Dijkstra's algorithm specific methods
     void Dijkstra_Initialize(void);
@@ -46,6 +58,7 @@ public:
 
 private:
     Point p;
+    vector<Edge *> adj;
 
     // Dijkstra's algorithm specific attributes
     float dij_dist;

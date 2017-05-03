@@ -100,7 +100,7 @@ Vertex *Graph::InsertVertexAndConnect(Point p)
         {
 #ifdef DEBUG
             // Print information about the current intersection
-            printf("(%.0f. %.0f) -> {(%.0f, %.0f), (%.0f, %.0f)}\n\n",
+            printf("Intersection(%.0f, %.0f) -> {(%.0f, %.0f), (%.0f, %.0f)}\n",
                    p.GetX(), p.GetY(),
                    edges.at(k)->GetSource()->GetPoint().GetX(), edges.at(k)->GetSource()->GetPoint().GetY(),
                    edges.at(k)->GetDestination()->GetPoint().GetX(), edges.at(k)->GetDestination()->GetPoint().GetY());
@@ -165,6 +165,7 @@ Edge *Graph::InsertEdge(Vertex *src, Vertex *dst, map<int, struct path_control_p
     if ((i = FindEdge(*e)) == -1)
     {
         edges.push_back(e);
+        src->InsertEdge(e);
         return e;
     }
     else
@@ -183,6 +184,11 @@ bool Graph::DeleteEdge(Edge e)
     {
         Edge *eptr = edges.at(p);
         edges.erase(edges.begin() + p);
+
+        // Find the vertex that has this edge
+        for (unsigned int i = 0; i < vertices.size(); i++)
+        	vertices.at(i)->DeleteEdge(e);
+
         delete eptr;
         return true;
     }
@@ -215,13 +221,8 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
     if ((src == NULL) || (dst == NULL) || (src == dst))
         return path;
 
-    // Build an adjacency list for the graph
-    //vector<Vertex *> adj[vertices.size()];
-    vector<Edge *> adj[vertices.size()];
-    int cur = 0;
-    int vleft = vertices.size();
-
-    // Create an adjacency list
+    // Initialize vertices and find source
+    int cur, vleft = vertices.size();
     for (unsigned int i = 0; i < vertices.size(); i++)
     {
         vertices.at(i)->Dijkstra_Initialize();
@@ -229,19 +230,9 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
         // Check if the current vertex is the src
         if (*vertices.at(i) == *src)
             cur = i;
-
-        // Check its edges
-        for (unsigned int j = 0; j < edges.size(); j++)
-        {
-            // Check if the current vertex is part of the current edge
-            if (*edges.at(j)->GetSource() == *vertices.at(i))
-            	adj[i].push_back(new Edge(edges.at(j)->GetSource(), edges.at(j)->GetDestination(), edges.at(j)->GetPathControl()));
-            else if (*edges.at(j)->GetDestination() == *vertices.at(i))
-            	adj[i].push_back(new Edge(edges.at(j)->GetDestination(), edges.at(j)->GetSource(), edges.at(j)->GetPathControl()));
-        }
     }
 
-    // Initialize vertices
+    // Initialize source
     vertices.at(cur)->Dijkstra_SetDist(0);
 
     // Run Dijkstra
@@ -249,26 +240,29 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
     while ((dst->Dijkstra_GetVisited() == false) && (vleft > 0))
     {
         vleft--;
+        Vertex *vcur = vertices.at(cur);
 
         // Visit all neighbors of cur and update the distances
-        for (unsigned int i = 0; i < adj[cur].size(); i++)
+        for (unsigned int i = 0; i < vcur->GetNeightboors().size(); i++)
         {
+        	Edge *e = vcur->GetNeightboors().at(i);
+
             // Don't check against visited vertices
-            if (adj[cur].at(i)->GetDestination()->Dijkstra_GetVisited() == true)
+            if (e->GetDestination()->Dijkstra_GetVisited() == true)
                 continue;
 
             // Compare the distances
-            new_dist = vertices.at(cur)->Dijkstra_GetDist() + adj[cur].at(i)->GetLenght(t);
-            if (new_dist < adj[cur].at(i)->GetDestination()->Dijkstra_GetDist())
+            new_dist = vcur->Dijkstra_GetDist() + e->GetLenght(t);
+            if (new_dist < e->GetDestination()->Dijkstra_GetDist())
             {
                 // The new path is better. Update!
-                adj[cur].at(i)->GetDestination()->Dijkstra_SetDist(new_dist);
-                adj[cur].at(i)->GetDestination()->Dijkstra_SetBefore(vertices.at(cur));
+                e->GetDestination()->Dijkstra_SetDist(new_dist);
+                e->GetDestination()->Dijkstra_SetBefore(vcur);
             }
         }
 
         // Set the current vertex as visited and choose another one
-        vertices.at(cur)->Dijkstra_SetVisited(true);
+        vcur->Dijkstra_SetVisited(true);
 
         // The new current vertex must be the unvisited one with the lower distance
         new_dist = (unsigned long int)(-1);
@@ -283,7 +277,7 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
         }
     }
 
-    // Return the set of Edges using Graph::InsertEdge() to find them
+    // Return the set of Edges in the path
     Vertex *v = dst;
 
     while (v != NULL)

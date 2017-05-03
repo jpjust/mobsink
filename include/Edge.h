@@ -30,6 +30,8 @@ enum edge_exception {
     EX_EDGE_INVALID_DST,
 };
 
+class Vertex;
+
 // This class represents an edge in a graph
 class Edge
 {

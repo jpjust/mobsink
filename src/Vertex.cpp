@@ -1,6 +1,6 @@
 /*
  * Graph's Vertex class for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -61,6 +61,52 @@ Point Vertex::GetPoint(void)
 void Vertex::SetPoint(Point p)
 {
     this->p = p;
+}
+
+vector<Edge *> Vertex::GetNeightboors(void)
+{
+	return this->adj;
+}
+
+// Return the index of an Edge or -1 if it doesn't exist
+int Vertex::FindEdge(Edge e)
+{
+    for (unsigned int i = 0; i < adj.size(); i++)
+        if (*adj.at(i) == e)
+            return i;
+
+    return -1;
+}
+
+// Check if there is an Edge e
+bool Vertex::HasEdge(Edge e)
+{
+    if (FindEdge(e) > -1)
+        return true;
+
+    return false;
+}
+
+// Insert a new edge (neighboor)
+bool Vertex::InsertEdge(Edge *e)
+{
+	if (HasEdge(*e))
+		return false;	// This edge is already present
+
+	this->adj.push_back(e);
+	return true;
+}
+
+// Delete an edge from the neighboors list
+bool Vertex::DeleteEdge(Edge e)
+{
+    int p = FindEdge(e);
+
+    if (p > -1)
+    {
+        adj.erase(adj.begin() + p);
+        return true;
+    }
 }
 
 // Dijkstra's algorithm specific getters and setters

@@ -822,8 +822,16 @@ bool PanelNetwork::LoadXML(wxString filename)
             float ya = atof(child->GetAttribute(wxT("ya"), wxT("0")).char_str());
             float xb = atof(child->GetAttribute(wxT("xb"), wxT("0")).char_str());
             float yb = atof(child->GetAttribute(wxT("yb"), wxT("0")).char_str());
+			wxString flow_str = child->GetAttribute(wxT("flow"), wxT(""));
+			int flow;
+			if (flow_str == wxT("ab"))
+				flow = PATHFLOW_AB;
+			else if (flow_str == wxT("ba"))
+				flow = PATHFLOW_BA;
+			else
+				flow = PATHFLOW_BI;
 
-            Path newpath(xa, ya, xb, yb);
+            Path newpath(xa, ya, xb, yb, flow);
 
             // Get path traffic changes
 			wxXmlNode *nodechild = child->GetChildren();
@@ -833,8 +841,7 @@ bool PanelNetwork::LoadXML(wxString filename)
 				{
 					int stime = atoi(nodechild->GetAttribute(wxT("time"), wxT("0")).char_str());
 					int weight = atoi(nodechild->GetAttribute(wxT("weight"), wxT("1")).char_str());
-
-					bool blocked = nodechild->GetAttribute(wxT("blocked"), wxT("true")) == wxT("true") ? true : false;
+					bool blocked = nodechild->GetAttribute(wxT("blocked"), wxT("false")) == wxT("true") ? true : false;
 
 					newpath.InsertControl(stime, weight, blocked);
 				}

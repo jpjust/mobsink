@@ -22,25 +22,28 @@
 #include <math.h>
 
 // Constructors
-Path::Path()
+Path::Path(int flow)
 {
 	ResetControlParams();
+	SetFlow(flow);
 }
 
-Path::Path(Point a, Point b)
+Path::Path(Point a, Point b, int flow)
 {
 	ResetControlParams();
     SetPointA(a);
     SetPointB(b);
+	SetFlow(flow);
 }
 
-Path::Path(float xa, float ya, float xb, float yb)
+Path::Path(float xa, float ya, float xb, float yb, int flow)
 {
 	ResetControlParams();
     Point a(xa, ya);
     Point b(xb, yb);
     SetPointA(a);
     SetPointB(b);
+	SetFlow(flow);
 }
 
 // Getters and setters
@@ -54,6 +57,11 @@ Point Path::GetPointB(void)
     return this->b;
 }
 
+int Path::GetFlow(void)
+{
+	return this->flow;
+}
+
 void Path::SetPointA(Point a)
 {
     this->a = a;
@@ -62,6 +70,11 @@ void Path::SetPointA(Point a)
 void Path::SetPointB(Point b)
 {
     this->b = b;
+}
+
+void Path::SetFlow(int flow)
+{
+	this->flow = flow;
 }
 
 // Return the lenght of this path

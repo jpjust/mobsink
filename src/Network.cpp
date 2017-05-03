@@ -27,6 +27,8 @@
 // Constructor
 Network::Network()
 {
+	this->txrange = 0;
+	this->static_sinks = false;
     this->sink_move_boundary = 0;
 }
 
@@ -788,7 +790,21 @@ void Network::BuildGraph(void)
     {
         Vertex *v = G.InsertVertex(paths.at(i).GetPointA());
         Vertex *w = G.InsertVertex(paths.at(i).GetPointB());
-        G.InsertEdge(v, w, paths.at(i).GetPathControl());
+
+        switch (paths.at(i).GetFlow())
+        {
+        case PATHFLOW_AB:
+        	G.InsertEdge(v, w, paths.at(i).GetPathControl());
+        	break;
+
+        case PATHFLOW_BA:
+        	G.InsertEdge(w, v, paths.at(i).GetPathControl());
+        	break;
+
+        case PATHFLOW_BI:
+        	G.InsertEdge(v, w, paths.at(i).GetPathControl());
+        	G.InsertEdge(w, v, paths.at(i).GetPathControl());
+        }
     }
 
     // For each intersection, add its position as a vertex
@@ -812,6 +828,8 @@ void Network::BuildGraph(void)
         G.InsertVertexAndConnect(*clusters.at(k)->GetSink());
 
 #ifdef DEBUG
+    printf("\nBuilding graph...\n\n");
+
     // Print all the vertices
     vector<Vertex *> v = G.GetVertices();
 
@@ -820,7 +838,7 @@ void Network::BuildGraph(void)
         printf("V = {(%.0f, %.0f)", v[0]->GetPoint().GetX(), v[0]->GetPoint().GetY());
         for (unsigned int i = 1; i < v.size(); i++)
             printf(", (%.0f, %.0f)", v[i]->GetPoint().GetX(), v[i]->GetPoint().GetY());
-        printf("}\nTotal: %lu\n\n", v.size());
+        printf("}\n\n");
     }
 
     // Print all the edges
@@ -836,9 +854,13 @@ void Network::BuildGraph(void)
         printf(",\n\t{(%.0f, %.0f), (%.0f, %.0f)}",
             e[i]->GetSource()->GetPoint().GetX(), e[i]->GetSource()->GetPoint().GetY(),
             e[i]->GetDestination()->GetPoint().GetX(), e[i]->GetDestination()->GetPoint().GetY());
-
-        printf("\n}\nTotal: %lu\n\n", e.size());
+        printf("\n}\n\n");
     }
+
+    // Print number of vertices and edges
+    printf("Vertices: %lu\n", v.size());
+    printf("Edges: %lu\n\n", e.size());
+    printf("Graph building finished!\n\n");
 #endif // DEBUG
 }
 

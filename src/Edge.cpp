@@ -39,7 +39,7 @@ Edge::Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_
 // Operator ==
 bool Edge::operator==(Edge e)
 {
-    return ((*src == *e.GetSource()) && (*dst == *e.GetDestination())) || ((*dst == *e.GetSource()) && (*src == *e.GetDestination()));
+    return ((*src == *e.GetSource()) && (*dst == *e.GetDestination()));
 }
 
 // Getters and setters
@@ -91,7 +91,7 @@ int Edge::GetLenght(int time)
 				continue;
 
 			if (this->path_control->at(i).blocked)
-				return (unsigned int)9999999999;
+				return (unsigned int)-1;
 			else
 				return this->src->GetPoint().Distance(this->dst->GetPoint()) * this->path_control->at(i).weight;
 		}
