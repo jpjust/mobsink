@@ -49,10 +49,12 @@ public:
 
     // Dijkstra's algorithm specific methods
     void Dijkstra_Initialize(void);
+    float Dijkstra_GetWeight(void);
     float Dijkstra_GetDist(void);
     bool Dijkstra_GetVisited(void);
     Vertex *Dijkstra_GetBefore(void);
     void Dijkstra_SetDist(float dist);
+    void Dijkstra_SetWeight(float weight);
     void Dijkstra_SetVisited(bool visited);
     void Dijkstra_SetBefore(Vertex *before);
 
@@ -61,6 +63,7 @@ private:
     vector<Edge *> adj;
 
     // Dijkstra's algorithm specific attributes
+    float dij_weight;
     float dij_dist;
     bool dij_visited;
     Vertex *dij_before;

@@ -211,14 +211,15 @@ Point Path::GetIntersection(Path r, bool &exist)
 // Reset control parameters
 void Path::ResetControlParams(void)
 {
-	InsertControl(0, 1, false);
+	InsertControl(0, 0, 1, false);
 }
 
 // Insert control settings at a specific time
-void Path::InsertControl(int time, int weight, bool blocked)
+void Path::InsertControl(int time, float speedlimit, float traffic, bool blocked)
 {
     struct path_control_params p;
-    p.weight = weight;
+    p.traffic = traffic;
+    p.speedlimit = speedlimit;
     p.blocked = blocked;
     this->path_control.insert(pair<int, struct path_control_params>(time, p));
 }

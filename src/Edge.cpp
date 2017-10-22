@@ -19,6 +19,7 @@
  */
 
 #include <stdlib.h>
+#include <limits>
 #include "Edge.h"
 
 // Default constructor
@@ -79,8 +80,14 @@ map<int, struct path_control_params> *Edge::GetPathControl(void)
 	return this->path_control;
 }
 
-// Return the lenght of this edge
-int Edge::GetLenght(int time)
+/* Return the weight of this edge
+ *
+ * If there is a path control, check its current speed limit and traffic
+ * congestion, to return the total time to travel the road.
+ *
+ * If there is no path control, just return the path's length.
+ **/
+float Edge::GetWeight(int time)
 {
 	if (path_control)
 	{
@@ -91,11 +98,24 @@ int Edge::GetLenght(int time)
 				continue;
 
 			if (this->path_control->at(i).blocked)
-				return (unsigned int)-1;
+				return std::numeric_limits<double>::max();	// Infinite
 			else
-				return this->src->GetPoint().Distance(this->dst->GetPoint()) * this->path_control->at(i).weight;
+			{
+				float distance = this->src->GetPoint().Distance(this->dst->GetPoint());
+				float speedlimit = this->path_control->at(i).speedlimit;
+				float traffic = this->path_control->at(i).traffic;
+				float speed = speedlimit * traffic;
+				float totaltime = (speed == 0) ? std::numeric_limits<float>::max() : distance / speed;
+				return totaltime;
+			}
 		}
 	}
 
+	return this->GetLength();
+}
+
+// Return the length of the edge
+float Edge::GetLength(void)
+{
 	return this->src->GetPoint().Distance(this->dst->GetPoint());
 }

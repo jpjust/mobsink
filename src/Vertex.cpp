@@ -20,6 +20,7 @@
 
 #include "Vertex.h"
 #include <stdlib.h>
+#include <limits>
 
 // Default constructor
 Vertex::Vertex(void)
@@ -50,7 +51,8 @@ void Vertex::Dijkstra_Initialize(void)
 {
     Dijkstra_SetBefore(NULL);
     Dijkstra_SetVisited(false);
-    Dijkstra_SetDist((unsigned long int)(-1));
+    Dijkstra_SetDist(0);
+    Dijkstra_SetWeight(std::numeric_limits<float>::max());
 }
 
 // Getters and setters
@@ -113,6 +115,11 @@ bool Vertex::DeleteEdge(Edge e)
 }
 
 // Dijkstra's algorithm specific getters and setters
+float Vertex::Dijkstra_GetWeight(void)
+{
+    return this->dij_weight;
+}
+
 float Vertex::Dijkstra_GetDist(void)
 {
     return this->dij_dist;
@@ -131,6 +138,11 @@ Vertex *Vertex::Dijkstra_GetBefore(void)
 void Vertex::Dijkstra_SetDist(float dist)
 {
     this->dij_dist = dist;
+}
+
+void Vertex::Dijkstra_SetWeight(float weight)
+{
+	this->dij_weight = weight;
 }
 
 void Vertex::Dijkstra_SetVisited(bool visited)

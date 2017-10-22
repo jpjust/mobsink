@@ -842,10 +842,11 @@ bool PanelNetwork::LoadXML(wxString filename)
 				if (nodechild->GetName() == wxT("traffic"))
 				{
 					int stime = atoi(nodechild->GetAttribute(wxT("time"), wxT("0")).char_str());
-					int weight = atoi(nodechild->GetAttribute(wxT("weight"), wxT("1")).char_str());
+					float speedlimit = atof(nodechild->GetAttribute(wxT("speedlimit"), wxT("0")).char_str());
+					float traffic = atof(nodechild->GetAttribute(wxT("traffic"), wxT("1")).char_str());
 					bool blocked = nodechild->GetAttribute(wxT("blocked"), wxT("false")) == wxT("true") ? true : false;
 
-					newpath.InsertControl(stime, weight, blocked);
+					newpath.InsertControl(stime, speedlimit, traffic, blocked);
 				}
 
 				// Get next control change

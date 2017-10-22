@@ -46,7 +46,9 @@ public:
     void SetPathControl(map<int, struct path_control_params> *path_control);
     map<int, struct path_control_params> *GetPathControl(void);
 
-    int GetLenght(int time = 0);
+    float GetWeight(int time = 0);
+    float GetLength(void);
+
 private:
     Vertex *src;
     Vertex *dst;

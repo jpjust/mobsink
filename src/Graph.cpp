@@ -21,6 +21,7 @@
 #include "Graph.h"
 #include "Path.h"
 #include <stdio.h>
+#include <limits>
 
 // Default constructor
 Graph::Graph()
@@ -233,7 +234,7 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
     }
 
     // Initialize source
-    vertices.at(cur)->Dijkstra_SetDist(0);
+    vertices.at(cur)->Dijkstra_SetWeight(0);
 
     // Run Dijkstra
     float new_dist;
@@ -252,12 +253,15 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
                 continue;
 
             // Compare the distances
-            new_dist = vcur->Dijkstra_GetDist() + e->GetLenght(t);
-            if (new_dist < e->GetDestination()->Dijkstra_GetDist())
+            new_dist = vcur->Dijkstra_GetWeight() + e->GetWeight(t);
+            if (new_dist < e->GetDestination()->Dijkstra_GetWeight())
             {
                 // The new path is better. Update!
-                e->GetDestination()->Dijkstra_SetDist(new_dist);
+                e->GetDestination()->Dijkstra_SetWeight(new_dist);
                 e->GetDestination()->Dijkstra_SetBefore(vcur);
+
+                // Set the new distance
+                e->GetDestination()->Dijkstra_SetDist(vcur->Dijkstra_GetDist() + e->GetLength());
             }
         }
 
@@ -265,14 +269,14 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
         vcur->Dijkstra_SetVisited(true);
 
         // The new current vertex must be the unvisited one with the lower distance
-        new_dist = (unsigned long int)(-1);
+        new_dist = std::numeric_limits<float>::max();
         for (unsigned int i = 0; i < vertices.size(); i++)
         {
             Vertex *v = vertices.at(i);
-            if ((v->Dijkstra_GetVisited() == false) && (v->Dijkstra_GetDist() < new_dist))
+            if ((v->Dijkstra_GetVisited() == false) && (v->Dijkstra_GetWeight() < new_dist))
             {
                 cur = i;
-                new_dist = v->Dijkstra_GetDist();
+                new_dist = v->Dijkstra_GetWeight();
             }
         }
     }
