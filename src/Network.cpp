@@ -813,16 +813,16 @@ void Network::BuildGraph(void)
         switch (paths.at(i).GetFlow())
         {
         case PATHFLOW_AB:
-        	G.InsertEdge(v, w, paths.at(i).GetPathControl());
+        	G.InsertEdge(v, w, paths.at(i).GetPathControl(), paths.at(i).GetSpeedLimit());
         	break;
 
         case PATHFLOW_BA:
-        	G.InsertEdge(w, v, paths.at(i).GetPathControl());
+        	G.InsertEdge(w, v, paths.at(i).GetPathControl(), paths.at(i).GetSpeedLimit());
         	break;
 
         case PATHFLOW_BI:
-        	G.InsertEdge(v, w, paths.at(i).GetPathControl());
-        	G.InsertEdge(w, v, paths.at(i).GetPathControl());
+        	G.InsertEdge(v, w, paths.at(i).GetPathControl(), paths.at(i).GetSpeedLimit());
+        	G.InsertEdge(w, v, paths.at(i).GetPathControl(), paths.at(i).GetSpeedLimit());
         }
     }
 

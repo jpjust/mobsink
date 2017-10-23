@@ -46,18 +46,20 @@ struct path_control_params
 class Path
 {
 public:
-    Path(pathflow flow = PATHFLOW_BI);
-    Path(Point a, Point b, pathflow flow = PATHFLOW_BI);
-    Path(float xa, float ya, float xb, float yb, pathflow flow = PATHFLOW_BI);
+    Path(pathflow flow = PATHFLOW_BI, float speedlimit = 0);
+    Path(Point a, Point b, pathflow flow = PATHFLOW_BI, float speedlimit = 0);
+    Path(float xa, float ya, float xb, float yb, pathflow flow = PATHFLOW_BI, float speedlimit = 0);
     void Reset(void);
 
     Point GetPointA(void);
     Point GetPointB(void);
     pathflow GetFlow(void);
+    float GetSpeedLimit(void);
 
     void SetPointA(Point a);
     void SetPointB(Point b);
     void SetFlow(pathflow flow);
+    void SetSpeedLimit(float speedlimit);
 
     float GetLenght(void);
     bool HasPoint(Point p);
@@ -73,6 +75,7 @@ private:
     Point a;
     Point b;
     pathflow flow;
+    float speedlimit;	// Default speed limit
     struct path_control_params params_init;
     map<int, struct path_control_params> path_control;    // Key: time in seconds
 

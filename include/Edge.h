@@ -36,7 +36,7 @@ class Vertex;
 class Edge
 {
 public:
-    Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control = NULL) throw(edge_exception);
+    Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control, float speedlimit = 0) throw(edge_exception);
     bool operator==(Edge e);
 
     Vertex *GetSource(void);
@@ -48,11 +48,13 @@ public:
 
     float GetWeight(int time = 0);
     float GetLength(void);
+    float GetSpeedLimit(void);
 
 private:
     Vertex *src;
     Vertex *dst;
     map<int, struct path_control_params> *path_control;
+    float speedlimit;
 };
 
 #endif // EDGE_H

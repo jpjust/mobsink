@@ -90,7 +90,7 @@ bool Vertex::HasEdge(Edge e)
     return false;
 }
 
-// Insert a new edge (neighboor)
+// Insert a new edge (neighbor)
 bool Vertex::InsertEdge(Edge *e)
 {
 	if (HasEdge(*e))
@@ -100,7 +100,7 @@ bool Vertex::InsertEdge(Edge *e)
 	return true;
 }
 
-// Delete an edge from the neighboors list
+// Delete an edge from the neighbors list
 bool Vertex::DeleteEdge(Edge e)
 {
     int p = FindEdge(e);

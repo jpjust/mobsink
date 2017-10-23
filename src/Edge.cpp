@@ -23,13 +23,14 @@
 #include "Edge.h"
 
 // Default constructor
-Edge::Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control) throw(edge_exception)
+Edge::Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control, float speedlimit) throw(edge_exception)
 {
     try
     {
         SetSource(src);
         SetDestination(dst);
         SetPathControl(path_control);
+        this->speedlimit = speedlimit;
     }
     catch(edge_exception *e)
     {
@@ -89,10 +90,13 @@ map<int, struct path_control_params> *Edge::GetPathControl(void)
  **/
 float Edge::GetWeight(int time)
 {
-	if (path_control)
+	float distance, speedlimit, traffic, speed, totaltime;
+
+	// Is there any traffic control?
+	if (path_control->size() > 1)
 	{
 		// Search for the last change in this path
-		for (unsigned int i = time; i >= 0; i--)
+		for (unsigned int i = time; i > 0; i--)
 		{
 			if (this->path_control->find(i) == this->path_control->end())
 				continue;
@@ -101,21 +105,35 @@ float Edge::GetWeight(int time)
 				return std::numeric_limits<double>::max();	// Infinite
 			else
 			{
-				float distance = this->src->GetPoint().Distance(this->dst->GetPoint());
-				float speedlimit = this->path_control->at(i).speedlimit;
-				float traffic = this->path_control->at(i).traffic;
-				float speed = speedlimit * traffic;
-				float totaltime = (speed == 0) ? std::numeric_limits<float>::max() : distance / speed;
-				return totaltime;
+				distance = this->src->GetPoint().Distance(this->dst->GetPoint());
+				speedlimit = this->path_control->at(i).speedlimit == 0 ? this->speedlimit : this->path_control->at(i).speedlimit;
+				traffic = this->path_control->at(i).traffic;
+				speed = speedlimit * traffic;
+				totaltime = (speed == 0) ? std::numeric_limits<float>::max() : distance / speed;
 			}
 		}
 	}
+	// Else, we use the default speed limit (if any) or the path's length
+	else
+	{
+		distance = this->src->GetPoint().Distance(this->dst->GetPoint());
+		speedlimit = this->speedlimit;
+		traffic = 1;
+		speed = speedlimit * traffic;
+		totaltime = (speed == 0) ? this->GetLength() : distance / speed;
+	}
 
-	return this->GetLength();
+	return totaltime;
 }
 
 // Return the length of the edge
 float Edge::GetLength(void)
 {
 	return this->src->GetPoint().Distance(this->dst->GetPoint());
+}
+
+// Return the speed limit
+float Edge::GetSpeedLimit(void)
+{
+	return this->speedlimit;
 }

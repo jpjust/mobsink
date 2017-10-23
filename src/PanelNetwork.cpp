@@ -742,6 +742,7 @@ bool PanelNetwork::LoadXML(wxString filename)
 
     int range = atoi(node_net->GetAttribute(wxT("txrange"), wxT("100")).char_str());
     int simtime = atoi(node_net->GetAttribute(wxT("time"), wxT("240")).char_str());
+    float defaultspeed = atof(node_net->GetAttribute(wxT("speedlimit"), wxT("0")).char_str());
     FrameGUI *parent = (FrameGUI *)GetParent();
     parent->SetRange(range);
     parent->SetTime(simtime);
@@ -767,6 +768,10 @@ bool PanelNetwork::LoadXML(wxString filename)
             float x = atof(child->GetAttribute(wxT("x"), wxT("0")).char_str());
             float y = atof(child->GetAttribute(wxT("y"), wxT("0")).char_str());
             int rl = atoi(child->GetAttribute(wxT("rl"), wxT("0")).char_str());
+
+            // Check some values
+            if ((x < 0) || (y < 0) || (rl < 0) || (rl > 15))
+            	return false;
 
             bool random_pos = child->GetAttribute(wxT("random_pos"), wxT("false")) == wxT("true") ? true : false;
             bool random_rl  = child->GetAttribute(wxT("random_rl"), wxT("false"))  == wxT("true") ? true : false;
@@ -813,6 +818,10 @@ bool PanelNetwork::LoadXML(wxString filename)
             float y = atof(child->GetAttribute(wxT("y"), wxT("0")).char_str());
             float r = atoi(child->GetAttribute(wxT("radius"), wxT("1")).char_str());
 
+            // Check some values
+            if ((x < 0) || (y < 0) || (r < 1))
+            	return false;
+
             Obstacle newobs(x, y, r);
             InsertObstacle(newobs);
         }
@@ -824,6 +833,11 @@ bool PanelNetwork::LoadXML(wxString filename)
             float ya = atof(child->GetAttribute(wxT("ya"), wxT("0")).char_str());
             float xb = atof(child->GetAttribute(wxT("xb"), wxT("0")).char_str());
             float yb = atof(child->GetAttribute(wxT("yb"), wxT("0")).char_str());
+
+            // Check some values
+            if ((xa < 0) || (xb < 0) || (ya < 0) || (yb < 0))
+            	return false;
+
 			wxString flow_str = child->GetAttribute(wxT("flow"), wxT(""));
 			pathflow flow;
 			if (flow_str == wxT("ab"))
@@ -833,7 +847,7 @@ bool PanelNetwork::LoadXML(wxString filename)
 			else
 				flow = PATHFLOW_BI;
 
-            Path newpath(xa, ya, xb, yb, flow);
+            Path newpath(xa, ya, xb, yb, flow, defaultspeed);
 
             // Get path traffic changes
 			wxXmlNode *nodechild = child->GetChildren();
@@ -841,10 +855,17 @@ bool PanelNetwork::LoadXML(wxString filename)
 			{
 				if (nodechild->GetName() == wxT("traffic"))
 				{
+					if (defaultspeed <= 0)
+						return false;
+
 					int stime = atoi(nodechild->GetAttribute(wxT("time"), wxT("0")).char_str());
 					float speedlimit = atof(nodechild->GetAttribute(wxT("speedlimit"), wxT("0")).char_str());
 					float traffic = atof(nodechild->GetAttribute(wxT("traffic"), wxT("1")).char_str());
 					bool blocked = nodechild->GetAttribute(wxT("blocked"), wxT("false")) == wxT("true") ? true : false;
+
+					// Check some values
+					if ((speedlimit < 0) || (traffic < 0) || (traffic > 1))
+						return false;
 
 					newpath.InsertControl(stime, speedlimit, traffic, blocked);
 				}

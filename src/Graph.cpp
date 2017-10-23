@@ -95,6 +95,7 @@ Vertex *Graph::InsertVertexAndConnect(Point p)
 
         Path r(edges.at(k)->GetSource()->GetPoint(), edges.at(k)->GetDestination()->GetPoint());
         map<int, struct path_control_params> *path_control = edges.at(k)->GetPathControl();
+        float speedlimit = edges.at(k)->GetSpeedLimit();
 
         // This edge has point p on it?
         if (r.HasPoint(p))
@@ -114,15 +115,15 @@ Vertex *Graph::InsertVertexAndConnect(Point p)
             // At last, delete the previously added edged formed by (v, w) and add the edges
             // formed by (v, y) and (y, w);
             DeleteEdge(*edges.at(k));
-            InsertEdge(v, y, path_control);
-            InsertEdge(y, w, path_control);
+            InsertEdge(v, y, path_control, speedlimit);
+            InsertEdge(y, w, path_control, speedlimit);
         }
     }
 
     return y;
 }
 
-// Delete a vertex from the vector and return true if it suceeded
+// Delete a vertex from the vector and return true if it succeeded
 bool Graph::DeleteVertex(Vertex v)
 {
     int p = FindVertex(v);
@@ -158,9 +159,9 @@ bool Graph::HasEdge(Edge e)
 }
 
 // Insert a new edge
-Edge *Graph::InsertEdge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control)
+Edge *Graph::InsertEdge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control, float speedlimit)
 {
-	Edge *e = new Edge(src, dst, path_control);
+	Edge *e = new Edge(src, dst, path_control, speedlimit);
     int i;
 
     if ((i = FindEdge(*e)) == -1)

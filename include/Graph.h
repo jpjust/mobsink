@@ -45,7 +45,7 @@ public:
     bool DeleteVertex(Vertex v);
     int FindEdge(Edge e);
     bool HasEdge(Edge e);
-    Edge *InsertEdge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control = NULL);
+    Edge *InsertEdge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control, float speedlimit = 0);
     bool DeleteEdge(Edge e);
 
     vector<Point> Dijkstra(Vertex *src, Vertex *dst, int t = 0);

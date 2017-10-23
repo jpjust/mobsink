@@ -22,21 +22,23 @@
 #include <math.h>
 
 // Constructors
-Path::Path(pathflow flow)
+Path::Path(pathflow flow, float speedlimit)
 {
 	ResetControlParams();
 	SetFlow(flow);
+	SetSpeedLimit(speedlimit);
 }
 
-Path::Path(Point a, Point b, pathflow flow)
+Path::Path(Point a, Point b, pathflow flow, float speedlimit)
 {
 	ResetControlParams();
     SetPointA(a);
     SetPointB(b);
 	SetFlow(flow);
+	SetSpeedLimit(speedlimit);
 }
 
-Path::Path(float xa, float ya, float xb, float yb, pathflow flow)
+Path::Path(float xa, float ya, float xb, float yb, pathflow flow, float speedlimit)
 {
 	ResetControlParams();
     Point a(xa, ya);
@@ -44,6 +46,7 @@ Path::Path(float xa, float ya, float xb, float yb, pathflow flow)
     SetPointA(a);
     SetPointB(b);
 	SetFlow(flow);
+	SetSpeedLimit(speedlimit);
 }
 
 // Getters and setters
@@ -62,6 +65,11 @@ pathflow Path::GetFlow(void)
 	return this->flow;
 }
 
+float Path::GetSpeedLimit(void)
+{
+	return this->speedlimit;
+}
+
 void Path::SetPointA(Point a)
 {
     this->a = a;
@@ -77,7 +85,12 @@ void Path::SetFlow(pathflow flow)
 	this->flow = flow;
 }
 
-// Return the lenght of this path
+void Path::SetSpeedLimit(float speedlimit)
+{
+	this->speedlimit = speedlimit;
+}
+
+// Return the length of this path
 float Path::GetLenght(void)
 {
     return a.Distance(b);
