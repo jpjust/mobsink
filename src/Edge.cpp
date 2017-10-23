@@ -90,27 +90,29 @@ map<int, struct path_control_params> *Edge::GetPathControl(void)
  **/
 float Edge::GetWeight(int time)
 {
-	float distance, speedlimit, traffic, speed, totaltime;
+	float distance, speedlimit, traffic, speed, totaltime = 0;
 
 	// Is there any traffic control?
 	if (path_control->size() > 1)
 	{
 		// Search for the last change in this path
-		for (unsigned int i = time; i > 0; i--)
-		{
-			if (this->path_control->find(i) == this->path_control->end())
-				continue;
+		struct path_control_params params;
+		map<int, struct path_control_params>::iterator it = this->path_control->lower_bound(time);
 
-			if (this->path_control->at(i).blocked)
-				return std::numeric_limits<double>::max();	// Infinite
-			else
-			{
-				distance = this->src->GetPoint().Distance(this->dst->GetPoint());
-				speedlimit = this->path_control->at(i).speedlimit == 0 ? this->speedlimit : this->path_control->at(i).speedlimit;
-				traffic = this->path_control->at(i).traffic;
-				speed = speedlimit * traffic;
-				totaltime = (speed == 0) ? std::numeric_limits<float>::max() : distance / speed;
-			}
+		if (it == this->path_control->end())
+			it--;
+
+		params = it->second;
+
+		if (params.blocked)
+			return std::numeric_limits<double>::max();	// Infinite
+		else
+		{
+			distance = this->src->GetPoint().Distance(this->dst->GetPoint());
+			speedlimit = params.speedlimit == 0 ? this->speedlimit : params.speedlimit;
+			traffic = params.traffic;
+			speed = speedlimit * traffic;
+			totaltime = (speed == 0) ? std::numeric_limits<float>::max() : distance / speed;
 		}
 	}
 	// Else, we use the default speed limit (if any) or the path's length
