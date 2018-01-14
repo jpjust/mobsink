@@ -1,6 +1,6 @@
 /*
  * Graph's Edge class for MobSink.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -46,7 +46,8 @@ public:
     void SetPathControl(map<int, struct path_control_params> *path_control);
     map<int, struct path_control_params> *GetPathControl(void);
 
-    float GetWeight(int time = 0);
+    float GetWeight(int time = 0, bool use_traffic = true);
+    unsigned int GetTime(int time = 0);
     float GetLength(void);
     float GetSpeedLimit(void);
 

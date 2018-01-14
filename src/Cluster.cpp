@@ -1,6 +1,6 @@
 /*
  * Cluster class for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -75,7 +75,8 @@ void Cluster::SetLastPath(vector<Point> last_path)
 // Increase the number of received PDUs by the sink
 void Cluster::IncreasePDUs(void)
 {
-    this->received_pdus++;
+	if (this->cur_time >= this->stopped_until)
+		this->received_pdus++;
 }
 
 // Reset the PDUs counting
@@ -392,4 +393,18 @@ Node *Cluster::FindNearestNode(Point p)
     }
 
     return n;
+}
+
+// Informs the cluster of the current time
+void Cluster::SetCurrentTime(unsigned int t)
+{
+	this->cur_time = t;
+}
+
+// Stop sink from receiving PDUs until time t seconds.
+// This is done to simulate the time the sink is still moving to its final
+// destination.
+void Cluster::StopSinkUntil(unsigned int t)
+{
+	this->stopped_until = t;
 }

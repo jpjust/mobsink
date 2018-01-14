@@ -1,6 +1,6 @@
 /*
  * Graph's Edge class for MobSink.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -88,12 +88,12 @@ map<int, struct path_control_params> *Edge::GetPathControl(void)
  *
  * If there is no path control, just return the path's length.
  **/
-float Edge::GetWeight(int time)
+float Edge::GetWeight(int time, bool use_traffic)
 {
 	float distance, speedlimit, traffic, speed, totaltime = 0;
 
-	// Is there any traffic control?
-	if (path_control->size() > 1)
+	// Check if we must use traffic control and if it does exist
+	if ((use_traffic) && (path_control->size() > 1))
 	{
 		// Search for the last change in this path
 		struct path_control_params params;
@@ -102,6 +102,11 @@ float Edge::GetWeight(int time)
 		if (it == this->path_control->end())
 			it--;
 
+		while (it->first > time)
+		{
+			it--;
+		};
+
 		params = it->second;
 
 		if (params.blocked)
@@ -109,7 +114,11 @@ float Edge::GetWeight(int time)
 		else
 		{
 			distance = this->src->GetPoint().Distance(this->dst->GetPoint());
+
+			// Speed must be in m/s
 			speedlimit = params.speedlimit == 0 ? this->speedlimit : params.speedlimit;
+			speedlimit /= 3.6;
+
 			traffic = params.traffic;
 			speed = speedlimit * traffic;
 			totaltime = (speed == 0) ? std::numeric_limits<float>::max() : distance / speed;
@@ -119,13 +128,21 @@ float Edge::GetWeight(int time)
 	else
 	{
 		distance = this->src->GetPoint().Distance(this->dst->GetPoint());
-		speedlimit = this->speedlimit;
+		speedlimit = use_traffic ? this->speedlimit / 3.6 : 0;
 		traffic = 1;
 		speed = speedlimit * traffic;
 		totaltime = (speed == 0) ? this->GetLength() : distance / speed;
 	}
 
 	return totaltime;
+}
+
+/* Return the time to move through this edge. This just calls GetWeight()
+ * with traffic control.
+ **/
+unsigned int Edge::GetTime(int time)
+{
+	return (unsigned int)GetWeight(time, true);
 }
 
 // Return the length of the edge

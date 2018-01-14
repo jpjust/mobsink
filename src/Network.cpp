@@ -1,6 +1,6 @@
 /*
  * MobSink Network modeling.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -486,7 +486,7 @@ void Network::RunKmeans(void)
 }
 
 // Position the sinks and return whenever any of them has changed (use current time to calculate Dijkstra's path)
-bool Network::PositionSinks(bool use_runtime_RL, int sinkpos, int t)
+bool Network::PositionSinks(bool use_runtime_RL, int sinkpos, int t, bool use_traffic)
 {
     // Variables
     int x[2], y[2];
@@ -614,10 +614,11 @@ bool Network::PositionSinks(bool use_runtime_RL, int sinkpos, int t)
                 // Otherwise, use moved distance
             	if (paths.size() > 0)
             	{
-            		clusters.at(k)->SetLastPath(G.Dijkstra(src, dst, t));
+            		clusters.at(k)->SetLastPath(G.Dijkstra(src, dst, t, use_traffic));
             		if ((t == 0) || (dst->Dijkstra_GetVisited()))
             		{
 						clusters.at(k)->IncrementDist(dst->Dijkstra_GetDist());
+						clusters.at(k)->StopSinkUntil(t + dst->Dijkstra_GetTime());
 		                hasChanged = true;
             		}
             		else

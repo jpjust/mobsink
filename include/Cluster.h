@@ -1,6 +1,6 @@
 /*
  * Cluster class for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -65,6 +65,8 @@ public:
     void CleanLinks(void);
     void CreateLinks(float range);
     Node *FindNearestNode(Point p);
+    void SetCurrentTime(unsigned int t);
+    void StopSinkUntil(unsigned int t);
 
 private:
     Sink sink;
@@ -74,6 +76,8 @@ private:
     double received_pdus;
     float moved_pixels;
     vector<Point> last_path;
+    unsigned int cur_time = 0;
+    unsigned int stopped_until = 0;
 };
 
 #endif // CLUSTER_H

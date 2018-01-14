@@ -1,6 +1,6 @@
 /*
  * Graph's Vertex class for MobSink.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -52,6 +52,7 @@ void Vertex::Dijkstra_Initialize(void)
     Dijkstra_SetBefore(NULL);
     Dijkstra_SetVisited(false);
     Dijkstra_SetDist(0);
+    Dijkstra_SetTime(0);
     Dijkstra_SetWeight(std::numeric_limits<float>::max());
 }
 
@@ -125,6 +126,11 @@ float Vertex::Dijkstra_GetDist(void)
     return this->dij_dist;
 }
 
+unsigned int Vertex::Dijkstra_GetTime(void)
+{
+	return this->dij_time;
+}
+
 bool Vertex::Dijkstra_GetVisited(void)
 {
     return this->dij_visited;
@@ -138,6 +144,11 @@ Vertex *Vertex::Dijkstra_GetBefore(void)
 void Vertex::Dijkstra_SetDist(float dist)
 {
     this->dij_dist = dist;
+}
+
+void Vertex::Dijkstra_SetTime(unsigned int t)
+{
+	this->dij_time = t;
 }
 
 void Vertex::Dijkstra_SetWeight(float weight)

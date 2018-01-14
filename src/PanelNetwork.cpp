@@ -1,6 +1,6 @@
 /*
  * MobSink network panel GUI.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -187,7 +187,7 @@ int PanelNetwork::GetSinkPos(int init)
 }
 
 // Run simulation
-void PanelNetwork::RunSim(int init, int s_time)
+void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
 {
     if (wsn.GetClusters().size() == 0)
     {
@@ -201,10 +201,10 @@ void PanelNetwork::RunSim(int init, int s_time)
     vector<Cluster *> clusters = wsn.GetClusters();
     int t = 1, last_t = 0, active = 0, active_before;
     unsigned int tx = 0;
-    double total_pdus = 0;
+    double total_pdus;
     time_t time_begin, time_end;
     int time_h, time_m, time_s;
-    double moved_pixels = 0;
+    //double moved_pixels = 0;
     double energy = 0;
     bool network_changed = false;
     wxString details = wxEmptyString, moves = wxEmptyString;
@@ -295,7 +295,7 @@ void PanelNetwork::RunSim(int init, int s_time)
         if ((network_changed) || (active != active_before) || (init == SINKPOS_HORIZONTAL) || (init == SINKPOS_VERTICAL))
         {
             // Reposition sinks
-            wsn.PositionSinks(true, sinkpos, t);
+            wsn.PositionSinks(true, sinkpos, t, use_traffic);
             wsn.CreateLinks();
 
             // This last part should be executed only if number of active nodes has changed
@@ -318,7 +318,12 @@ void PanelNetwork::RunSim(int init, int s_time)
             }
         }
 
-        // Then, make every node make a transmission
+        // Then, send clusters the current time...
+        for (unsigned int k = 0; k < clusters.size(); k++)
+        {
+        	clusters.at(k)->SetCurrentTime(t);
+        }
+        // ...and make every node make a transmission
         for (unsigned int i = 0; i < node_to_transmit.size(); i++)
         {
             double energy_cur = node_to_transmit.at(i)->SendData();
@@ -331,9 +336,16 @@ void PanelNetwork::RunSim(int init, int s_time)
             }
         }
 
+        // After sending data, count total PDUs sent until now for statistics
+        total_pdus = 0;
+        for (unsigned int k = 0; k < clusters.size(); k++)
+        {
+        	total_pdus += clusters.at(k)->GetPDUs();
+        }
+
         // Output data
         if (t % output_rate == 0)
-            details.Append(wxString::Format(wxT("%d;%.2f;%d\n"), t, energy, active));
+            details.Append(wxString::Format(wxT("%d;%.2f;%d;%.0f\n"), t, energy, active, total_pdus));
 
         // Update window at a dynamic rate
         if ((animate) && (t % paint_rate == 0))
@@ -354,17 +366,16 @@ void PanelNetwork::RunSim(int init, int s_time)
 
     // Compute how many packets arrived to the sinks and how much
     // the sinks has moved
-    for (unsigned int k = 0; k < clusters.size(); k++)
+    /*for (unsigned int k = 0; k < clusters.size(); k++)
     {
-        total_pdus += clusters.at(k)->GetPDUs();
         moved_pixels += clusters.at(k)->GetMovedPixels();
-    }
+    }*/
 
     // Summary
     parent->PrintOutput(wxT("\n\n----- Simulation finished -----\n"));
     parent->PrintOutput(wxString::Format(wxT("Time elapsed (real): %02d:%02d:%02d\n"), time_h, time_m, time_s));
     parent->PrintOutput(wxString::Format(wxT("Transmission range: %.0f m\n"), range));
-    parent->PrintOutput(wxString::Format(wxT("Sinks movement: %.2f m\n"), moved_pixels));
+    // THIS IS NOT ACCURATE: parent->PrintOutput(wxString::Format(wxT("Sinks movement: %.2f m\n"), moved_pixels));
     parent->PrintOutput(wxString::Format(wxT("Remaining sensors: %d of %lu\n"), active, nodes.size()));
     parent->PrintOutput(wxString::Format(wxT("Total energy spent: %.2f J\n"), energy));
     parent->PrintOutput(wxString::Format(wxT("Last transmission: t = %d s\n"), last_t));
@@ -374,14 +385,14 @@ void PanelNetwork::RunSim(int init, int s_time)
     // CSV output
     file_output = wxT("SIMULATION RESULTS\n\n");
     file_output.Append(wxString::Format(wxT("Transmission range;%.0f\n"), range));
-    file_output.Append(wxString::Format(wxT("Sinks movement;%.2f\n"), moved_pixels));
+    // THIS IS NOT ACCURATE: file_output.Append(wxString::Format(wxT("Sinks movement;%.2f\n"), moved_pixels));
     file_output.Append(wxString::Format(wxT("Remaining sensors;%d/%lu\n"), active, nodes.size()));
     file_output.Append(wxString::Format(wxT("Total energy spent;%.2f\n"), energy));
     file_output.Append(wxString::Format(wxT("Last transmission;%d\n"), last_t));
     file_output.Append(wxString::Format(wxT("Transmissions occurred;%u\n"), tx));
     file_output.Append(wxString::Format(wxT("Packets arrived to the sinks;%.0f\n"), total_pdus));
 
-    file_output.Append(wxT("\n\nDETAILS\nt;Energy;Active nodes\n"));
+    file_output.Append(wxT("\n\nDETAILS\nt;Energy;Active nodes;PDUs\n"));
     file_output.Append(details);
 
     // Average of hops used for each sensor

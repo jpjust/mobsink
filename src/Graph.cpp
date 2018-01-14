@@ -1,6 +1,6 @@
 /*
  * Graph implementation for MobSink.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -217,7 +217,7 @@ void Graph::Clear(void)
 }
 
 // Run Dijkstra's algorithm to find the best path from src to dst at a specific time
-vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
+vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t, bool use_traffic)
 {
     vector<Point> path;
     if ((src == NULL) || (dst == NULL) || (src == dst))
@@ -254,7 +254,7 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
                 continue;
 
             // Compare the distances
-            new_dist = vcur->Dijkstra_GetWeight() + e->GetWeight(t);
+            new_dist = vcur->Dijkstra_GetWeight() + e->GetWeight(t, use_traffic);
             if (new_dist < e->GetDestination()->Dijkstra_GetWeight())
             {
                 // The new path is better. Update!
@@ -263,6 +263,9 @@ vector<Point> Graph::Dijkstra(Vertex *src, Vertex *dst, int t)
 
                 // Set the new distance
                 e->GetDestination()->Dijkstra_SetDist(vcur->Dijkstra_GetDist() + e->GetLength());
+
+                // Set the time to get there
+                e->GetDestination()->Dijkstra_SetTime(vcur->Dijkstra_GetTime() + e->GetTime(t));
             }
         }
 

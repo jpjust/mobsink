@@ -1,6 +1,6 @@
 /*
  * MobSink network panel GUI.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -108,7 +108,7 @@ public:
     void RunMMS(int sinks, int init, bool use_runtime_RL);
     void PaintNow(void);
     bool SavePNG(wxString filename);
-    void RunSim(int init, int s_time);
+    void RunSim(int init, int s_time, bool use_traffic);
     bool SaveCSV(wxString filename);
     bool LoadXML(wxString filename);
     bool SaveXML(wxString filename);

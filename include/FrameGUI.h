@@ -1,6 +1,6 @@
 /*
  * MobSink Frame GUI.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -58,7 +58,7 @@ public:
     void SetRange(float range);
     void SetTime(int time);
     void PrintOutput(wxString text);
-    void StartCmdlineSim(wxString file_net, wxString file_out, int n_sinks, int init);
+    void StartCmdlineSim(wxString file_net, wxString file_out, int n_sinks, int init, bool use_traffic);
 
     DECLARE_EVENT_TABLE()
 

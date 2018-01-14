@@ -1,6 +1,6 @@
 /*
  * Helper functions for MobSink.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -23,7 +23,7 @@
 
 // Application name and version
 #define APP_NAME        wxT("MobSink Multiple Sinks Simulator")
-#define APP_VERSION     wxT("1.3")
+#define APP_VERSION     wxT("1.4")
 #define APP_VENDOR      wxT("LARA")
 #define APP_FULL_NAME   wxString::Format(wxT("%s %s %s"), APP_VENDOR, APP_NAME, APP_VERSION)
 

@@ -1,6 +1,6 @@
 /*
  * Graph's Vertex class for MobSink.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -51,9 +51,11 @@ public:
     void Dijkstra_Initialize(void);
     float Dijkstra_GetWeight(void);
     float Dijkstra_GetDist(void);
+    unsigned int Dijkstra_GetTime(void);
     bool Dijkstra_GetVisited(void);
     Vertex *Dijkstra_GetBefore(void);
     void Dijkstra_SetDist(float dist);
+    void Dijkstra_SetTime(unsigned int t);
     void Dijkstra_SetWeight(float weight);
     void Dijkstra_SetVisited(bool visited);
     void Dijkstra_SetBefore(Vertex *before);
@@ -65,6 +67,7 @@ private:
     // Dijkstra's algorithm specific attributes
     float dij_weight;
     float dij_dist;
+    unsigned int dij_time;
     bool dij_visited;
     Vertex *dij_before;
 };

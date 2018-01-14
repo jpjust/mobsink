@@ -1,6 +1,6 @@
 /*
  * Graph implementation for MobSink.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -48,7 +48,7 @@ public:
     Edge *InsertEdge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control, float speedlimit = 0);
     bool DeleteEdge(Edge e);
 
-    vector<Point> Dijkstra(Vertex *src, Vertex *dst, int t = 0);
+    vector<Point> Dijkstra(Vertex *src, Vertex *dst, int t = 0, bool use_traffic = true);
 
     void Clear(void);
 

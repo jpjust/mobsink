@@ -1,6 +1,6 @@
 /*
  * LARA MobSink Multiple Sinks Simulator.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -38,7 +38,7 @@ bool MMSApp::OnInit()
     if (use_gui)
         frame->Show();
     else
-        frame->StartCmdlineSim(this->netfile, this->csvfile, this->n_sinks, this->algorithm);
+        frame->StartCmdlineSim(this->netfile, this->csvfile, this->n_sinks, this->algorithm, this->use_traffic);
 
     return true;
 }
@@ -58,7 +58,11 @@ bool MMSApp::OnCmdLineParsed(wxCmdLineParser& parser)
     bool net = parser.Found(wxT("n"), &this->netfile);
     bool csv = parser.Found(wxT("o"), &this->csvfile);
     bool alg = parser.Found(wxT("a"), &this->algorithm);
+    parser.Found(wxT("t"), &this->traffic_opt);
     bool sinks = parser.Found(wxT("s"), &this->n_sinks);
+
+    // Set default value for traffic control parameter
+    this->traffic_opt == 1 ? this->use_traffic = true : this->use_traffic = false;
 
     // Verify if everything is OK
     if (net && csv && alg && sinks)

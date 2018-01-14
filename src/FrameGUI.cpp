@@ -1,6 +1,6 @@
 /*
  * MobSink Frame GUI.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -251,6 +251,7 @@ void FrameGUI::Run(wxCommandEvent &event)
         return;
     }
 
+    // Run simulation
     pnNet->RunMMS(atoi(txtSinks->GetValue().char_str()), comboInit->GetSelection(), false);
 }
 
@@ -305,8 +306,11 @@ void FrameGUI::GridSensors(wxCommandEvent &event)
 // Run simulation
 void FrameGUI::Simulate(wxCommandEvent &event)
 {
+    // Ask if traffic control will be used
+    bool use_traffic = (wxMessageBox(wxT("Do you want to use traffic control for sinks movement?"), APP_NAME, wxYES_NO | wxICON_QUESTION) == wxYES);
+
     pnNet->RunMMS(atoi(txtSinks->GetValue().char_str()), comboInit->GetSelection(), false);
-    pnNet->RunSim(comboInit->GetSelection(), atoi(txtTime->GetValue().char_str()));
+    pnNet->RunSim(comboInit->GetSelection(), atoi(txtTime->GetValue().char_str()), use_traffic);
 }
 
 // Save output data to a CSV file
@@ -448,7 +452,7 @@ void FrameGUI::OnToolBarClick(wxCommandEvent &event)
 }
 
 // Start a simulation via command line arguments
-void FrameGUI::StartCmdlineSim(wxString file_net, wxString file_out, int n_sinks, int init)
+void FrameGUI::StartCmdlineSim(wxString file_net, wxString file_out, int n_sinks, int init, bool use_traffic)
 {
 if (pnNet == NULL)
     wxPrintf(wxT("NULLLLLLLLLLLLLLLLLLLLL\n\n\n\n"));
@@ -463,7 +467,7 @@ if (pnNet == NULL)
 
     // Run simulation
     wxPrintf(wxT("\n----- Running simulation... -----\n"));
-    pnNet->RunSim(init, atoi(txtTime->GetValue().char_str()));
+    pnNet->RunSim(init, atoi(txtTime->GetValue().char_str()), use_traffic);
     wxPrintf(wxT("\n----- Finished simulating!  -----\n\n"));
 
     // Save results
