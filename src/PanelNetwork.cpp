@@ -547,7 +547,7 @@ bool PanelNetwork::SavePNG(wxString filename)
 {
     // Height and width
     int width, height;
-    GetSize(&width, &height);
+    GetVirtualSize(&width, &height);
 
     // Create a wxBitmap and a wxMemoryDC
     wxBitmap bmp(width, height, 32);
