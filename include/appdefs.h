@@ -21,11 +21,17 @@
 #ifndef APPDEFS_H_INCLUDED
 #define APPDEFS_H_INCLUDED
 
+#include <wx/stdpaths.h>
+
 // Application name and version
 #define APP_NAME        wxT("MobSink Multiple Sinks Simulator")
 #define APP_VERSION     wxT("1.4")
 #define APP_VENDOR      wxT("LARA")
 #define APP_FULL_NAME   wxString::Format(wxT("%s %s %s"), APP_VENDOR, APP_NAME, APP_VERSION)
+
+// Application path
+#define APP_PATH	wxStandardPaths::Get().GetExecutablePath()
+#define APP_DIR		wxPathOnly(APP_PATH)
 
 // Time conversion from seconds to hour, minutes and seconds
 void timesplit(unsigned int time_s, int &hours, int &minutes, int &seconds);

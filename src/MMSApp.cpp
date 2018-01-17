@@ -19,6 +19,7 @@
  */
 
 #include "MMSApp.h"
+#include "appdefs.h"
 #include <stdlib.h>
 
 // Program initialization
@@ -27,8 +28,9 @@ bool MMSApp::OnInit()
     if (!wxApp::OnInit())
         return false;
 
-    SetAppName(wxT("Mobile Multi Sink Simulator"));
-    SetVendorName(wxT("NetMedia"));
+    SetAppName(APP_NAME);
+    SetVendorName(APP_VENDOR);
+    wxSetWorkingDirectory(APP_DIR);
     srand(time(NULL)); // Seed the rand() for future use
     wxLocale app_locale(wxLANGUAGE_ENGLISH_US);
     wxInitAllImageHandlers();
