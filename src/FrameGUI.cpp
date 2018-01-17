@@ -397,7 +397,7 @@ void FrameGUI::OnToolBarClick(wxCommandEvent &event)
                      wxT("LARA, State University of Feira de Santana, BA, Brazil\n\n") + \
                      wxT("http://lara.uefs.br/\n\n") + \
                      wxT("http://just.pro.br/blog/mobsink/\n\n") + \
-                     wxT("Toolbar icons made by Freepik from www.flaticon.com\n\n") + \
+                     wxT("Toolbar icons: Beautiful Flat Icons from Elegant Themes - elegantthemes.com\n\n") + \
 					 wxT("This program is Free Software licensed under GPLv3."),
                      APP_NAME,
                      wxICON_INFORMATION,
