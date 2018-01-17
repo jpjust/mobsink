@@ -53,13 +53,8 @@
 									<listOptionValue builtIn="false" value="/usr/lib/x86_64-linux-gnu"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.152460545" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value="wx_gtk2u_xrc-3.0"/>
-									<listOptionValue builtIn="false" value="wx_gtk2u_html-3.0"/>
-									<listOptionValue builtIn="false" value="wx_gtk2u_qa-3.0"/>
-									<listOptionValue builtIn="false" value="wx_gtk2u_adv-3.0"/>
 									<listOptionValue builtIn="false" value="wx_gtk2u_core-3.0"/>
 									<listOptionValue builtIn="false" value="wx_baseu_xml-3.0"/>
-									<listOptionValue builtIn="false" value="wx_baseu_net-3.0"/>
 									<listOptionValue builtIn="false" value="wx_baseu-3.0"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1661167269" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
@@ -126,13 +121,8 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.release.1762514229" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.release"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.release.1160070036" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.release">
 								<option id="gnu.cpp.link.option.libs.500324985" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value="wx_gtk2u_xrc-3.0"/>
-									<listOptionValue builtIn="false" value="wx_gtk2u_html-3.0"/>
-									<listOptionValue builtIn="false" value="wx_gtk2u_qa-3.0"/>
-									<listOptionValue builtIn="false" value="wx_gtk2u_adv-3.0"/>
 									<listOptionValue builtIn="false" value="wx_gtk2u_core-3.0"/>
 									<listOptionValue builtIn="false" value="wx_baseu_xml-3.0"/>
-									<listOptionValue builtIn="false" value="wx_baseu_net-3.0"/>
 									<listOptionValue builtIn="false" value="wx_baseu-3.0"/>
 								</option>
 								<option id="gnu.cpp.link.option.flags.1678985712" name="Linker flags" superClass="gnu.cpp.link.option.flags" useByScannerDiscovery="false" value="-pthread" valueType="string"/>
