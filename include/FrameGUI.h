@@ -27,11 +27,6 @@
 // IDs
 enum
 {
-    ID_BTN_RUN,
-    ID_BTN_SAVECSV,
-    ID_BTN_LOADXML,
-    ID_BTN_SAVEXML,
-    ID_BTN_SAVEPNG,
     ID_TBAR_SENSOR,
     ID_TBAR_PATH,
     ID_TBAR_OBSTACLE,
@@ -47,6 +42,11 @@ enum
     ID_TBAR_ANIMATE,
     ID_TBAR_ABOUT,
     ID_TBAR_HELP,
+	ID_TBAR_RUN,
+	ID_TBAR_SAVECSV,
+	ID_TBAR_LOADXML,
+	ID_TBAR_SAVEXML,
+	ID_TBAR_SAVEPNG,
 };
 
 class FrameGUI: public wxFrame
@@ -69,11 +69,6 @@ private:
     wxStaticText *lbRL;
     wxStaticText *lbInit;
     wxStaticText *lbTime;
-    wxButton *btnRun;
-    wxButton *btnSaveCSV;
-    wxButton *btnLoadXML;
-    wxButton *btnSaveXML;
-    wxButton *btnSavePNG;
     wxTextCtrl *txtNodes;
     wxTextCtrl *txtSinks;
     wxTextCtrl *txtRange;

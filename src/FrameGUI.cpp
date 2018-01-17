@@ -28,30 +28,10 @@
 #ifndef __WXMSW__
 # include "../res/app_icon.xpm"
 #endif // __WXMSW__
-#include "../res/tb_sensor.xpm"
-#include "../res/tb_path.xpm"
-#include "../res/tb_obstacle.xpm"
-#include "../res/tb_grid.xpm"
-#include "../res/tb_sensor_rand.xpm"
-#include "../res/tb_random.xpm"
-#include "../res/tb_rl.xpm"
-#include "../res/tb_coord.xpm"
-#include "../res/tb_links.xpm"
-#include "../res/tb_batt.xpm"
-#include "../res/tb_animate.xpm"
-#include "../res/tb_new.xpm"
-#include "../res/tb_run.xpm"
-#include "../res/tb_about.xpm"
-#include "../res/tb_help.xpm"
 
 // Events table
 BEGIN_EVENT_TABLE(FrameGUI, wxFrame)
-    EVT_BUTTON(ID_BTN_RUN, FrameGUI::Run)
-    EVT_BUTTON(ID_BTN_SAVECSV, FrameGUI::SaveCSV)
-    EVT_BUTTON(ID_BTN_LOADXML, FrameGUI::LoadXML)
-    EVT_BUTTON(ID_BTN_SAVEXML, FrameGUI::SaveXML)
-    EVT_BUTTON(ID_BTN_SAVEPNG, FrameGUI::SavePNG)
-    EVT_TOOL_RANGE(ID_TBAR_SENSOR, ID_TBAR_HELP, FrameGUI::OnToolBarClick)
+    EVT_TOOL_RANGE(ID_TBAR_SENSOR, ID_TBAR_SAVEPNG, FrameGUI::OnToolBarClick)
 END_EVENT_TABLE()
 
 // Constructor
@@ -91,35 +71,39 @@ FrameGUI::FrameGUI()
     comboInit->Append(wxT("Relevance based (Random)"));
     comboInit->Append(wxT("Relevance based (Just)"));
 
-    btnRun = new wxButton(tbar2, ID_BTN_RUN, wxT("Insert sinks"));
-
-    tbar1->AddTool(ID_TBAR_SENSOR,   wxT("Sensor"),   wxBitmap(tb_sensor_xpm), wxT("Sensor adding tool"),   wxITEM_RADIO);
-    tbar1->AddTool(ID_TBAR_PATH,     wxT("Path"),     wxBitmap(tb_path_xpm), wxT("Path adding tool"),     wxITEM_RADIO);
-    tbar1->AddTool(ID_TBAR_OBSTACLE, wxT("Obstacle"), wxBitmap(tb_obstacle_xpm), wxT("Obstacle adding tool"), wxITEM_RADIO);
+    tbar1->AddTool(ID_TBAR_SENSOR,   wxT("Sensor"),   wxBitmap(wxT("png/tb_sensor.png"), wxBITMAP_TYPE_PNG),   wxT("Sensor adding tool"),   wxITEM_RADIO);
+    tbar1->AddTool(ID_TBAR_PATH,     wxT("Path"),     wxBitmap(wxT("png/tb_path.png"), wxBITMAP_TYPE_PNG),     wxT("Path adding tool"),     wxITEM_RADIO);
+    tbar1->AddTool(ID_TBAR_OBSTACLE, wxT("Obstacle"), wxBitmap(wxT("png/tb_obstacle.png"), wxBITMAP_TYPE_PNG), wxT("Obstacle adding tool"), wxITEM_RADIO);
     tbar1->AddSeparator();
     tbar1->AddControl(lbSensors);
     tbar1->AddControl(txtNodes);
-    tbar1->AddTool(ID_TBAR_GRID,     wxT("Grid insert"),   wxBitmap(tb_grid_xpm), wxT("Insert sensors in a grid manner"));
-    tbar1->AddTool(ID_TBAR_RANDOM,   wxT("Random insert"), wxBitmap(tb_sensor_rand_xpm), wxT("Insert sensors randomly"));
+    tbar1->AddTool(ID_TBAR_GRID,     wxT("Grid insert"),   wxBitmap(wxT("png/tb_grid.png"),        wxBITMAP_TYPE_PNG), wxT("Insert sensors in a grid manner"));
+    tbar1->AddTool(ID_TBAR_RANDOM,   wxT("Random insert"), wxBitmap(wxT("png/tb_sensor_rand.png"), wxBITMAP_TYPE_PNG), wxT("Insert sensors randomly"));
     tbar1->AddControl(lbRL);
     tbar1->AddControl(txtRL);
-    tbar1->AddTool(ID_TBAR_RANDRL,   wxT("Random RL"),     wxBitmap(tb_random_xpm), wxT("Insert sensors with random RLs"), wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_RANDRL,   wxT("Random RL"), wxBitmap(wxT("png/tb_random.png"), wxBITMAP_TYPE_PNG), wxT("Insert sensors with random RLs"), wxITEM_CHECK);
     tbar1->AddSeparator();
-    tbar1->AddTool(ID_TBAR_RL,       wxT("Show RL"),          wxBitmap(tb_rl_xpm), wxT("Display sensors RL"),     wxITEM_CHECK);
-    tbar1->AddTool(ID_TBAR_COORD,    wxT("Show coordinates"), wxBitmap(tb_coord_xpm), wxT("Display coordinates"),    wxITEM_CHECK);
-    tbar1->AddTool(ID_TBAR_LINES,    wxT("Show links"),       wxBitmap(tb_links_xpm), wxT("Display links"),          wxITEM_CHECK);
-    tbar1->AddTool(ID_TBAR_ENERGY,   wxT("Show energy"),      wxBitmap(tb_batt_xpm), wxT("Display energy bars"),    wxITEM_CHECK);
-    tbar1->AddTool(ID_TBAR_ANIMATE,  wxT("Enable animation"), wxBitmap(tb_animate_xpm), wxT("Enable sinks animation"), wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_RL,       wxT("Show RL"),          wxBitmap(wxT("png/tb_rl.png"),      wxBITMAP_TYPE_PNG), wxT("Display sensors RL"),     wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_COORD,    wxT("Show coordinates"), wxBitmap(wxT("png/tb_coord.png"),   wxBITMAP_TYPE_PNG), wxT("Display coordinates"),    wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_LINES,    wxT("Show links"),       wxBitmap(wxT("png/tb_links.png"),   wxBITMAP_TYPE_PNG), wxT("Display links"),          wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_ENERGY,   wxT("Show energy"),      wxBitmap(wxT("png/tb_batt.png"),    wxBITMAP_TYPE_PNG), wxT("Display energy bars"),    wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_ANIMATE,  wxT("Enable animation"), wxBitmap(wxT("png/tb_animate.png"), wxBITMAP_TYPE_PNG), wxT("Enable sinks animation"), wxITEM_CHECK);
     tbar1->AddSeparator();
-    tbar1->AddTool(ID_TBAR_CLEAR,    wxT("Clear"), wxBitmap(tb_new_xpm), wxT("Clear WSN"));
     tbar1->AddControl(lbTime);
     tbar1->AddControl(txtTime);
-    tbar1->AddTool(ID_TBAR_SIM,      wxT("Start"), wxBitmap(tb_run_xpm), wxT("Start simulation"));
+    tbar1->AddTool(ID_TBAR_SIM,      wxT("Start"), wxBitmap(wxT("png/tb_run.png"), wxBITMAP_TYPE_PNG), wxT("Start simulation"));
     tbar1->AddSeparator();
-    tbar1->AddTool(ID_TBAR_HELP,     wxT("Help"), wxBitmap(tb_help_xpm), wxT("Go to Multi Mobile Sink Simulator website"));
-    tbar1->AddTool(ID_TBAR_ABOUT,    wxT("About"), wxBitmap(tb_about_xpm), wxT("About this software"));
+    tbar1->AddTool(ID_TBAR_HELP,     wxT("Help"),  wxBitmap(wxT("png/tb_help.png"),  wxBITMAP_TYPE_PNG), wxT("Go to MobSink website"));
+    tbar1->AddTool(ID_TBAR_ABOUT,    wxT("About"), wxBitmap(wxT("png/tb_about.png"), wxBITMAP_TYPE_PNG), wxT("About this software"));
     tbar1->Realize();
 
+    tbar2->AddTool(ID_TBAR_CLEAR,    wxT("Clear"), wxBitmap(wxT("png/tb_new.png"), wxBITMAP_TYPE_PNG), wxT("Clear WSN"));
+    tbar2->AddTool(ID_TBAR_LOADXML, wxT("Load WSN"), wxBitmap(wxT("png/tb_open_map.png"), wxBITMAP_TYPE_PNG), wxT("Load a XML file of a saved WSN"));
+    tbar2->AddTool(ID_TBAR_SAVEXML, wxT("Save WSN"), wxBitmap(wxT("png/tb_save_map.png"), wxBITMAP_TYPE_PNG), wxT("Save a XML file containing the current WSN"));
+    tbar2->AddSeparator();
+    tbar2->AddTool(ID_TBAR_SAVEPNG, wxT("Save map"),    wxBitmap(wxT("png/tb_save_png.png"), wxBITMAP_TYPE_PNG), wxT("Save the current map in PNG format"));
+    tbar2->AddTool(ID_TBAR_SAVECSV, wxT("Save report"), wxBitmap(wxT("png/tb_save_csv.png"), wxBITMAP_TYPE_PNG), wxT("Save a report for the last simulation in CSV format"));
+    tbar2->AddSeparator();
     tbar2->AddControl(lbRange);
     tbar2->AddControl(txtRange);
     tbar2->AddSeparator();
@@ -129,16 +113,11 @@ FrameGUI::FrameGUI()
     tbar2->AddControl(lbInit);
     tbar2->AddControl(comboInit);
     tbar2->AddSeparator();
-    tbar2->AddControl(btnRun);
+    tbar2->AddTool(ID_TBAR_RUN, wxT("Insert sink(s)"), wxBitmap(wxT("png/tb_sink.png"), wxBITMAP_TYPE_PNG), wxT("Insert sink(s) in WSN"));
     tbar2->Realize();
 
     // Create other widgets
     txtOutput = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(300, 0), wxTE_MULTILINE | wxTE_READONLY);
-
-    btnLoadXML = new wxButton(this, ID_BTN_LOADXML, wxT("Load network"));
-    btnSaveXML = new wxButton(this, ID_BTN_SAVEXML, wxT("Save network"));
-    btnSaveCSV = new wxButton(this, ID_BTN_SAVECSV, wxT("Save results"));
-    btnSavePNG = new wxButton(this, ID_BTN_SAVEPNG, wxT("Save PNG"));
 
     pnNet = new PanelNetwork(this);
 
@@ -146,29 +125,17 @@ FrameGUI::FrameGUI()
     wxBoxSizer *sizer_main = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer *sizer_sim = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer *sizer_output = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer *sizer_output_tbar1 = new wxBoxSizer(wxHORIZONTAL);
-    wxBoxSizer *sizer_output_tbar2 = new wxBoxSizer(wxHORIZONTAL);
-
-    // Output toolbar 1
-    sizer_output_tbar1->Add(btnLoadXML, 1, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 5);
-    sizer_output_tbar1->Add(btnSaveXML, 1, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 5);
-
-    // Output toolbar 2
-    sizer_output_tbar2->Add(btnSavePNG, 1, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 5);
-    sizer_output_tbar2->Add(btnSaveCSV, 1, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 5);
 
     // Output panel
     sizer_output->Add(txtOutput, 1, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 5);
-    sizer_output->Add(sizer_output_tbar1, 0, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 0);
-    sizer_output->Add(sizer_output_tbar2, 0, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 0);
 
     // Simulation area
     sizer_sim->Add(pnNet, 1, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 5);
     sizer_sim->Add(sizer_output, 0, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 0);
 
     // Main sizer
-    sizer_main->Add(tbar1, 0, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 0);
     sizer_main->Add(tbar2, 0, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 0);
+    sizer_main->Add(tbar1, 0, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 0);
     sizer_main->Add(sizer_sim, 1, wxALL | wxALIGN_CENTER_VERTICAL | wxEXPAND, 0);
 
     SetSizerAndFit(sizer_main);
@@ -445,6 +412,26 @@ void FrameGUI::OnToolBarClick(wxCommandEvent &event)
                          wxICON_INFORMATION,
                          this);
         break;
+
+    case ID_TBAR_RUN:
+    	Run(event);
+    	break;
+
+    case ID_TBAR_SAVECSV:
+    	SaveCSV(event);
+    	break;
+
+    case ID_TBAR_LOADXML:
+    	LoadXML(event);
+    	break;
+
+    case ID_TBAR_SAVEXML:
+    	SaveXML(event);
+    	break;
+
+    case ID_TBAR_SAVEPNG:
+    	SavePNG(event);
+    	break;
 
     default:
         break;
