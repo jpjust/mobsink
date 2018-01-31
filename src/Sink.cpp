@@ -1,6 +1,6 @@
 /*
  * Sink class for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -44,10 +44,18 @@ void Sink::SetConnected(bool connected)
 double Sink::GetData(void)
 {
     // Account the transmission
-    GetCluster()->IncreasePDUs();
+	if (GetCluster()->SinkCanReceive())
+	{
+		GetCluster()->IncreasePDUs();
 
-    // Sink has no energy constraints
-    return 0;
+		// Sink has no energy constraints
+		return 0;
+	}
+	else
+	{
+		// Transmission cannot be done
+		return -1;
+	}
 }
 
 // Make sink walk

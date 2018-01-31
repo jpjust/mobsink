@@ -1,6 +1,6 @@
 /*
  * Nodes modeling for MobSink.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -36,11 +36,13 @@
 #define PWT_BIT  (TX_POWER / 1000)      // Power consumed per second of transmission (Joules)
 
 // Data transmission
-//#define PDU_SIZE 80000.0f               // Size of a PDU (bits)
-#define PDU_SIZE 1016.0f                // Size of a PDU (bits)
-#define TX_BIT   0.000004f              // How much time to transmit 1 bit (seconds)
-#define TX_TIME  (TX_BIT * PDU_SIZE)    // How much time to transmit 1 PDU (seconds)
-#define GEN_RATE 0.2f                   // Packet generation rate (will be multiplied by sensor relevance)
+//#define PDU_SIZE 80000.0f                  // Size of a PDU (bits)
+#define PDU_SIZE    1016.0f                  // Size of a PDU (bits)
+#define TX_BIT      0.000004f                // How much time to transmit 1 bit (seconds)
+#define TX_TIME     (TX_BIT * PDU_SIZE)      // How much time to transmit 1 PDU (seconds)
+#define GEN_RATE    0.2f                     // Packet generation rate (will be multiplied by sensor relevance)
+#define DATA_BUFFER 1048576.0f               // Data buffer size in bits (1,048,576 bits = 128 KB)
+#define PDU_BUFFER  (DATA_BUFFER / PDU_SIZE) // Data buffer size in PDUs
 
 #define PWR      (TX_TIME * PWR_BIT)    // Energy consumed to receive 1 PDU (Joules)
 #define PWT      (TX_TIME * PWT_BIT)    // Energy consumed to transmit 1 PDU (Joules)
@@ -49,11 +51,12 @@
 
 // Parameters for energy consumption (for simulation)
 
-#define POWER    100.0f // Initial power
-#define TX_TIME  1.0f   // How many time to transmit 1 PDU
-#define PWR      0.5f   // Energy consumed to receive 1 PDU
-#define PWT      0.5f   // Energy consumed to transmit 1 PDU
-#define GEN_RATE 0.1f   // Packet generation rate (will be multiplied by sensor relevance)
+#define POWER    100.0f   // Initial power
+#define TX_TIME  1.0f     // How many time to transmit 1 PDU
+#define PWR      0.5f     // Energy consumed to receive 1 PDU
+#define PWT      0.5f     // Energy consumed to transmit 1 PDU
+#define GEN_RATE 0.1f     // Packet generation rate (will be multiplied by sensor relevance)
+#define PDU_BUFFER 128.0f // Data buffer size in KB
 
 #endif // PARAM_REAL_WORLD
 
@@ -86,6 +89,7 @@ public:
     Node *GetNextHop(void);
     int GetHopsToSink(void);
     double GetPDUs(void);
+    double GetDropped(void);
     double GetPower(void);
     bool IsActive(void);
     double GetHopsAvg(void);
@@ -115,6 +119,7 @@ private:
     double power;
     int time_elapsed;
     double pdu;
+    double dropped;
     double hops;
     double tx;
     bool active;

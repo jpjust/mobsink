@@ -201,7 +201,7 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     vector<Cluster *> clusters = wsn.GetClusters();
     int t = 1, last_t = 0, active = 0, active_before;
     unsigned int tx = 0;
-    double total_pdus;
+    double total_pdus, total_drops;
     time_t time_begin, time_end;
     int time_h, time_m, time_s;
     //double moved_pixels = 0;
@@ -336,11 +336,13 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
             }
         }
 
-        // After sending data, count total PDUs sent until now for statistics
+        // After sending data, count total PDUs sent and dropped until now for statistics
         total_pdus = 0;
+        total_drops = 0;
         for (unsigned int k = 0; k < clusters.size(); k++)
         {
         	total_pdus += clusters.at(k)->GetPDUs();
+        	total_drops += clusters.at(k)->GetDrops();
         }
 
         // Output data
@@ -380,7 +382,8 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     parent->PrintOutput(wxString::Format(wxT("Total energy spent: %.2f J\n"), energy));
     parent->PrintOutput(wxString::Format(wxT("Last transmission: t = %d s\n"), last_t));
     parent->PrintOutput(wxString::Format(wxT("Transmissions occurred: %u\n"), tx));
-    parent->PrintOutput(wxString::Format(wxT("Packets arrived to the sinks: %.0f\n\n\n"), total_pdus));
+    parent->PrintOutput(wxString::Format(wxT("Packets arrived to the sinks: %.0f\n"), total_pdus));
+    parent->PrintOutput(wxString::Format(wxT("Packets dropped: %.0f\n\n\n"), total_drops));
 
     // CSV output
     file_output = wxT("SIMULATION RESULTS\n\n");
@@ -391,6 +394,7 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     file_output.Append(wxString::Format(wxT("Last transmission;%d\n"), last_t));
     file_output.Append(wxString::Format(wxT("Transmissions occurred;%u\n"), tx));
     file_output.Append(wxString::Format(wxT("Packets arrived to the sinks;%.0f\n"), total_pdus));
+    file_output.Append(wxString::Format(wxT("Packets dropped;%.0f\n"), total_drops));
 
     file_output.Append(wxT("\n\nDETAILS\nt;Energy;Active nodes;PDUs\n"));
     file_output.Append(details);

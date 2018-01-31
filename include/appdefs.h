@@ -25,7 +25,7 @@
 
 // Application name and version
 #define APP_NAME        wxT("MobSink Multiple Sinks Simulator")
-#define APP_VERSION     wxT("1.4")
+#define APP_VERSION     wxT("1.5")
 #define APP_VENDOR      wxT("LARA")
 #define APP_FULL_NAME   wxString::Format(wxT("%s %s %s"), APP_VENDOR, APP_NAME, APP_VERSION)
 

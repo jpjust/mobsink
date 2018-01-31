@@ -1,6 +1,6 @@
 /*
  * Nodes modeling for MobSink.
- * Copyright (C) 2015-2017 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -19,6 +19,7 @@
  */
 
 #include "Node.h"
+#include "Cluster.h"
 #include <stdio.h>
 
 // Constructor
@@ -74,6 +75,11 @@ double Node::GetPDUs(void)
     return this->pdu;
 }
 
+double Node::GetDropped(void)
+{
+	return this->dropped;
+}
+
 double Node::GetPower(void)
 {
     return this->power;
@@ -115,6 +121,7 @@ void Node::Reset(void)
     this->power = POWER;
     this->time_elapsed = 0;
     this->pdu = 0;
+    this->dropped = 0;
     this->changed = false;
     this->active = params_init.active;
     this->RL = params_init.RL;
@@ -143,7 +150,12 @@ bool Node::CompareLinks(Node *dest)
 void Node::GenerateData(void)
 {
     if (IsActive())
-        pdu += pkt_rate[RL];
+    {
+    	if (pdu + pkt_rate[RL] <= PDU_BUFFER)
+    		pdu += pkt_rate[RL];
+    	else
+    		GetCluster()->IncreaseDrops(pkt_rate[RL]);
+    }
 }
 
 // Return if there is data to send
@@ -188,7 +200,11 @@ double Node::GetData(void)
     if (power >= PWR)
     {
         power -= PWR;
-        pdu++;
+        // Check for available space in buffer
+        if ((pdu + 1) <= PDU_BUFFER)
+        	pdu++;
+        else // Drop packet
+        	GetCluster()->IncreaseDrops(1);
         return PWR;
     }
     else    // Else, drain all energy and tell the sender
@@ -232,12 +248,16 @@ double Node::SendData(void)
         }
         else // If there is power to transmit, go ahead
         {
+            // Get how much energy the next hop will spend receiving
+            double pwr_hop = nexthop->GetData();
+
+            // Check if transmission was done
+            if (pwr_hop < 0)
+            	return 0;
+
             // Increase hops and tx counters
             hops += hops_to_sink;
             tx++;
-
-            // Get how much energy the next hop will spend receiving
-            double pwr_hop = nexthop->GetData();
 
             // If the next hop got the data or it is the sink, compute
             if ((pwr_hop > 0) || (hops_to_sink == 1))

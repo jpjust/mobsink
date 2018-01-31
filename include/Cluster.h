@@ -40,12 +40,14 @@ public:
     Point *GetMean(void);
     int GetRL(void);
     double GetPDUs(void);
+    double GetDrops(void);
     float GetMovedPixels(void);
     vector<Point> GetLastPath(void);
     void SetLastPath(vector<Point> last_path);
     void IncrementDist(float dist);
 
     void IncreasePDUs(void);
+    void IncreaseDrops(double packets);
     void ResetPDUs(void);
 
     unsigned int GetNodesCount(void);
@@ -67,6 +69,7 @@ public:
     Node *FindNearestNode(Point p);
     void SetCurrentTime(unsigned int t);
     void StopSinkUntil(unsigned int t);
+    bool SinkCanReceive(void);
 
 private:
     Sink sink;
@@ -74,6 +77,7 @@ private:
     vector<Node *> nodes;
     int RL;
     double received_pdus;
+    double dropped_pdus;
     float moved_pixels;
     vector<Point> last_path;
     unsigned int cur_time = 0;

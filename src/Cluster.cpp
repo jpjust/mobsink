@@ -31,6 +31,7 @@ Cluster::Cluster()
     this->mean.SetY(0);
     this->RL = 0;
     this->received_pdus = 0;
+    this->dropped_pdus = 0;
     this->sink.SetCluster(this);
     this->moved_pixels = 0;
 }
@@ -56,6 +57,11 @@ double Cluster::GetPDUs(void)
     return this->received_pdus;
 }
 
+double Cluster::GetDrops(void)
+{
+	return this->dropped_pdus;
+}
+
 float Cluster::GetMovedPixels(void)
 {
     return this->moved_pixels;
@@ -75,14 +81,21 @@ void Cluster::SetLastPath(vector<Point> last_path)
 // Increase the number of received PDUs by the sink
 void Cluster::IncreasePDUs(void)
 {
-	if (this->cur_time >= this->stopped_until)
+	if (SinkCanReceive())
 		this->received_pdus++;
+}
+
+// Increase the number of dropped PDUs in this cluster
+void Cluster::IncreaseDrops(double packets)
+{
+	this->dropped_pdus += packets;
 }
 
 // Reset the PDUs counting
 void Cluster::ResetPDUs(void)
 {
     this->received_pdus = 0;
+    this->dropped_pdus = 0;
 }
 
 // Return the number of nodes
@@ -407,4 +420,10 @@ void Cluster::SetCurrentTime(unsigned int t)
 void Cluster::StopSinkUntil(unsigned int t)
 {
 	this->stopped_until = t;
+}
+
+// Return true if the sink can receive PDUs (look at stopped_until)
+bool Cluster::SinkCanReceive(void)
+{
+	return (this->cur_time >= this->stopped_until);
 }
