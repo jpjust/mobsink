@@ -619,6 +619,7 @@ bool Network::PositionSinks(bool use_runtime_RL, int sinkpos, int t, bool use_tr
             		{
 						clusters.at(k)->IncrementDist(dst->Dijkstra_GetDist());
 						clusters.at(k)->StopSinkUntil(t + dst->Dijkstra_GetTime());
+						clusters.at(k)->AddTravel(dst->Dijkstra_GetTime());
 		                hasChanged = true;
             		}
             		else

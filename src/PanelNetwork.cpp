@@ -204,12 +204,13 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     double total_pdus, total_drops;
     time_t time_begin, time_end;
     int time_h, time_m, time_s;
-    //double moved_pixels = 0;
+    double moved_pixels = 0;
+    double avg_time = 0;
     double energy = 0;
     bool network_changed = false;
     wxString details = wxEmptyString, moves = wxEmptyString;
 
-    // Set a dynamic paiting rate
+    // Set a dynamic painting rate
     int paint_rate = s_time / 10000;
     if (paint_rate == 0)
         paint_rate = 1;
@@ -228,9 +229,12 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     for (unsigned int i = 0; i < nodes.size(); i++)
         nodes.at(i)->Reset();
 
-    // Also, reset the PDUs counting of each cluster
+    // Also, reset the PDUs and travel times counting of each cluster
     for (unsigned int k = 0; k < clusters.size(); k++)
+    {
         clusters.at(k)->ResetPDUs();
+        clusters.at(k)->ResetTravels();
+    }
 
     // Get Tx Range
     FrameGUI *parent = (FrameGUI *)GetParent();
@@ -308,12 +312,18 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
                     vector<Point> route = clusters.at(k)->GetLastPath();
                     wxString coordinates = wxEmptyString;
 
+                    // Collect nodes
                     wxPrintf(wxT("Sink #%d path: "), k);
                     for (int i = route.size() - 1; i >= 0; i--)
                         coordinates.Append(wxString::Format(wxT("(%.0f, %.0f) "), route.at(i).GetX(), route.at(i).GetY()));
 
+                    // Print nodes
                     wxPrintf(coordinates + wxT("\n"));
                     moves.Append(wxString::Format(wxT("%d;%d;"), t, k) + coordinates + wxT("\n"));
+
+                    // Print travel time
+                    timesplit(clusters.at(k)->GetLastTravelTime(), time_h, time_m, time_s);
+                    wxPrintf(wxT("Sink #%d travel time: %02d:%02d:%02d\n"), k, time_h, time_m, time_s);
                 }
             }
         }
@@ -366,18 +376,21 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     time_end = time(NULL);
     timesplit((unsigned int)(time_end - time_begin), time_h, time_m, time_s);
 
-    // Compute how many packets arrived to the sinks and how much
-    // the sinks has moved
-    /*for (unsigned int k = 0; k < clusters.size(); k++)
+    // Compute the average travel time and how much the sinks has moved
+    for (unsigned int k = 0; k < clusters.size(); k++)
     {
         moved_pixels += clusters.at(k)->GetMovedPixels();
-    }*/
+        avg_time += clusters.at(k)->GetAvgTravelTime();
+    }
+
+    avg_time /= clusters.size();
 
     // Summary
     parent->PrintOutput(wxT("\n\n----- Simulation finished -----\n"));
     parent->PrintOutput(wxString::Format(wxT("Time elapsed (real): %02d:%02d:%02d\n"), time_h, time_m, time_s));
     parent->PrintOutput(wxString::Format(wxT("Transmission range: %.0f m\n"), range));
-    // THIS IS NOT ACCURATE: parent->PrintOutput(wxString::Format(wxT("Sinks movement: %.2f m\n"), moved_pixels));
+    parent->PrintOutput(wxString::Format(wxT("Sinks movement: %.2f m\n"), moved_pixels));
+    parent->PrintOutput(wxString::Format(wxT("Average travel time: %.2f s\n"), avg_time));
     parent->PrintOutput(wxString::Format(wxT("Remaining sensors: %d of %lu\n"), active, nodes.size()));
     parent->PrintOutput(wxString::Format(wxT("Total energy spent: %.2f J\n"), energy));
     parent->PrintOutput(wxString::Format(wxT("Last transmission: t = %d s\n"), last_t));
@@ -388,7 +401,8 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     // CSV output
     file_output = wxT("SIMULATION RESULTS\n\n");
     file_output.Append(wxString::Format(wxT("Transmission range;%.0f\n"), range));
-    // THIS IS NOT ACCURATE: file_output.Append(wxString::Format(wxT("Sinks movement;%.2f\n"), moved_pixels));
+    file_output.Append(wxString::Format(wxT("Sinks movement;%.2f\n"), moved_pixels));
+    file_output.Append(wxString::Format(wxT("Average travel time;%.2f\n"), avg_time));
     file_output.Append(wxString::Format(wxT("Remaining sensors;%d/%lu\n"), active, nodes.size()));
     file_output.Append(wxString::Format(wxT("Total energy spent;%.2f\n"), energy));
     file_output.Append(wxString::Format(wxT("Last transmission;%d\n"), last_t));

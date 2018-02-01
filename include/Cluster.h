@@ -49,6 +49,7 @@ public:
     void IncreasePDUs(void);
     void IncreaseDrops(double packets);
     void ResetPDUs(void);
+    void ResetTravels(void);
 
     unsigned int GetNodesCount(void);
     Node *GetNodeAt(unsigned int i);
@@ -70,6 +71,9 @@ public:
     void SetCurrentTime(unsigned int t);
     void StopSinkUntil(unsigned int t);
     bool SinkCanReceive(void);
+    void AddTravel(unsigned int t);
+    double GetAvgTravelTime(void);
+    unsigned int GetLastTravelTime(void);
 
 private:
     Sink sink;
@@ -82,6 +86,7 @@ private:
     vector<Point> last_path;
     unsigned int cur_time = 0;
     unsigned int stopped_until = 0;
+    vector<unsigned int> travels;
 };
 
 #endif // CLUSTER_H

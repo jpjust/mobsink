@@ -427,3 +427,31 @@ bool Cluster::SinkCanReceive(void)
 {
 	return (this->cur_time >= this->stopped_until);
 }
+
+// Add a travel time to the list of travels
+void Cluster::AddTravel(unsigned int t) {
+	this->travels.push_back(t);
+}
+
+// Return the average travel time based on added travels
+double Cluster::GetAvgTravelTime(void) {
+	double sum = 0;
+
+	for (unsigned int i = 0; i < this->travels.size(); i++)
+		sum += this->travels.at(i);
+
+	return sum / this->travels.size();
+}
+
+// Reset the travels vector
+void Cluster::ResetTravels(void) {
+	this->travels.clear();
+}
+
+// Return the last travel time
+unsigned int Cluster::GetLastTravelTime(void) {
+	if (this->travels.size() == 0)
+		return 0;
+
+	return this->travels.at(this->travels.size() - 1);
+}
