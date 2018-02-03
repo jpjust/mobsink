@@ -1,5 +1,3 @@
-- Implement a data buffer for sensor nodes (sensors cannot have unlimited
-  buffer size).
 - PanelNetwork::SaveXML doesn't save traffic and blocked data yet.
 - It seems that when a sensor has RL > 0 but no connectivity, it keeps
   generating data (that's OK) and flushes all the data at once when it gets
