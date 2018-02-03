@@ -24,10 +24,16 @@
 #include <wx/stdpaths.h>
 
 // Application name and version
+#ifdef DEBUG
+# define APP_DEBUG		wxT(" (DEBUG)")
+#else
+# define APP_DEBUG		wxEmptyString
+#endif
+
 #define APP_NAME        wxT("MobSink Multiple Sinks Simulator")
 #define APP_VERSION     wxT("1.5")
 #define APP_VENDOR      wxT("LARA")
-#define APP_FULL_NAME   wxString::Format(wxT("%s %s %s"), APP_VENDOR, APP_NAME, APP_VERSION)
+#define APP_FULL_NAME   wxString::Format(wxT("%s %s %s%s"), APP_VENDOR, APP_NAME, APP_VERSION, APP_DEBUG)
 
 // Application path
 #define APP_PATH	wxStandardPaths::Get().GetExecutablePath()

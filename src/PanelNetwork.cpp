@@ -251,10 +251,13 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     time_begin = time(NULL);
 
     // Build the network graph
-    parent->PrintOutput(wxString::Format(wxT("Building graph... ")));
-    wxMilliSleep(1);
-    PaintNow();
-    wsn.BuildGraph();
+    if ((init == SINKPOS_RLFORGY) || (init == SINKPOS_RLRANDOM) || (init == SINKPOS_RLJUST))
+    {
+		parent->PrintOutput(wxString::Format(wxT("Building graph... ")));
+		wxMilliSleep(1);
+		PaintNow();
+		wsn.BuildGraph();
+    }
 
     // Print graph building time
     time_end = time(NULL);

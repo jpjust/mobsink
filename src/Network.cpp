@@ -242,11 +242,15 @@ void Network::UpdateClusters(void)
     }
 
     // If the sinks are static, every sensor is part of every cluster
+    // Use the first cluster as reference for some calculations
     if (static_sinks)
     {
         for (unsigned int i = 0; i < nodes.size(); i++)
             for (unsigned int k = 0; k < clusters.size(); k++)
+            {
                 clusters.at(k)->InsertNode(nodes.at(i));
+                nodes.at(i)->SetCluster(clusters.at(0));
+            }
 
         return;
     }
@@ -284,6 +288,7 @@ void Network::MeansInitializeStatic(void)
     static_sinks = true;
     sink_move_boundary = 0;
     GridSinks();
+    UpdateClusters();
 }
 
 // Initialize the means using Forgy
@@ -366,9 +371,12 @@ void Network::MeansInitializeJust(void)
             i++;
 
         // If we couldn't find any active sensor, let's try with inactive
-        i = 0;
-        while (node_used[i] == true)
-            i++;
+        if (i >= nodes.size())
+        {
+			i = 0;
+			while (node_used[i] == true)
+				i++;
+        }
 
         Sink *cur = clusters.at(k)->GetSink();
         float min_dist = cur->Distance(*nodes.at(i));
