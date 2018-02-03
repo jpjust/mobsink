@@ -206,6 +206,7 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     int time_h, time_m, time_s;
     double moved_pixels = 0;
     double avg_time = 0;
+    double sum_time = 0;
     double energy = 0;
     bool network_changed = false;
     wxString details = wxEmptyString, moves = wxEmptyString;
@@ -357,7 +358,7 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
 
         // Output data
         if (t % output_rate == 0)
-            details.Append(wxString::Format(wxT("%d;%.2f;%d;%.0f\n"), t, energy, active, total_pdus));
+            details.Append(wxString::Format(wxT("%d;%.2f;%d;%.0f;%.0f\n"), t, energy, active, total_pdus, total_drops));
 
         // Update window at a dynamic rate
         if ((animate) && (t % paint_rate == 0))
@@ -381,16 +382,23 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     {
         moved_pixels += clusters.at(k)->GetMovedPixels();
         avg_time += clusters.at(k)->GetAvgTravelTime();
+        sum_time += clusters.at(k)->GetTotalTravelTime();
     }
 
     avg_time /= clusters.size();
+
+    // Split times in hours, minutes and seconds
+    int avg_h, avg_m, avg_s, sum_h, sum_m, sum_s;
+    timesplit(avg_time, avg_h, avg_m, avg_s);
+    timesplit(sum_time, sum_h, sum_m, sum_s);
 
     // Summary
     parent->PrintOutput(wxT("\n\n----- Simulation finished -----\n"));
     parent->PrintOutput(wxString::Format(wxT("Time elapsed (real): %02d:%02d:%02d\n"), time_h, time_m, time_s));
     parent->PrintOutput(wxString::Format(wxT("Transmission range: %.0f m\n"), range));
     parent->PrintOutput(wxString::Format(wxT("Sinks movement: %.2f m\n"), moved_pixels));
-    parent->PrintOutput(wxString::Format(wxT("Average travel time: %.2f s\n"), avg_time));
+    parent->PrintOutput(wxString::Format(wxT("Average travel time: %02d:%02d:%02d\n"), avg_h, avg_m, avg_s));
+    parent->PrintOutput(wxString::Format(wxT("Total travel time (all sinks): %02d:%02d:%02d\n"), sum_h, sum_m, sum_s));
     parent->PrintOutput(wxString::Format(wxT("Remaining sensors: %d of %lu\n"), active, nodes.size()));
     parent->PrintOutput(wxString::Format(wxT("Total energy spent: %.2f J\n"), energy));
     parent->PrintOutput(wxString::Format(wxT("Last transmission: t = %d s\n"), last_t));
@@ -403,6 +411,7 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     file_output.Append(wxString::Format(wxT("Transmission range;%.0f\n"), range));
     file_output.Append(wxString::Format(wxT("Sinks movement;%.2f\n"), moved_pixels));
     file_output.Append(wxString::Format(wxT("Average travel time;%.2f\n"), avg_time));
+    file_output.Append(wxString::Format(wxT("Total travel time (all sinks);%.2f\n"), sum_time));
     file_output.Append(wxString::Format(wxT("Remaining sensors;%d/%lu\n"), active, nodes.size()));
     file_output.Append(wxString::Format(wxT("Total energy spent;%.2f\n"), energy));
     file_output.Append(wxString::Format(wxT("Last transmission;%d\n"), last_t));
@@ -410,7 +419,7 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     file_output.Append(wxString::Format(wxT("Packets arrived to the sinks;%.0f\n"), total_pdus));
     file_output.Append(wxString::Format(wxT("Packets dropped;%.0f\n"), total_drops));
 
-    file_output.Append(wxT("\n\nDETAILS\nt;Energy;Active nodes;PDUs\n"));
+    file_output.Append(wxT("\n\nDETAILS\nt;Energy;Active nodes;PDUs;Dropped PDUs\n"));
     file_output.Append(details);
 
     // Average of hops used for each sensor

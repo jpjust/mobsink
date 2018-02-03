@@ -73,6 +73,7 @@ public:
     bool SinkCanReceive(void);
     void AddTravel(unsigned int t);
     double GetAvgTravelTime(void);
+    unsigned int GetTotalTravelTime(void);
     unsigned int GetLastTravelTime(void);
 
 private:
