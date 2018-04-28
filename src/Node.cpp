@@ -151,10 +151,14 @@ void Node::GenerateData(void)
 {
     if (IsActive())
     {
-    	if (pdu + pkt_rate[RL] <= PDU_BUFFER)
-    		pdu += pkt_rate[RL];
+    	//if (pdu + pkt_rate[RL] <= PDU_BUFFER)
+    	//	pdu += pkt_rate[RL];
+    	//else
+    	//	GetCluster()->IncreaseDrops(pkt_rate[RL]);
+    	if (pdu + (RL * GEN_RATE) <= PDU_BUFFER)
+    		pdu += RL * GEN_RATE;
     	else
-    		GetCluster()->IncreaseDrops(pkt_rate[RL]);
+    		GetCluster()->IncreaseDrops(RL * GEN_RATE);
     }
 }
 

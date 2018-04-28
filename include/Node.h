@@ -40,7 +40,7 @@
 #define PDU_SIZE    1016.0f                  // Size of a PDU (bits)
 #define TX_BIT      0.000004f                // How much time to transmit 1 bit (seconds)
 #define TX_TIME     (TX_BIT * PDU_SIZE)      // How much time to transmit 1 PDU (seconds)
-#define GEN_RATE    0.2f                     // Packet generation rate (will be multiplied by sensor relevance)
+#define GEN_RATE    10                     // Packet generation rate (will be multiplied by sensor relevance)
 #define DATA_BUFFER 1048576.0f               // Data buffer size in bits (1,048,576 bits = 128 KB)
 #define PDU_BUFFER  (DATA_BUFFER / PDU_SIZE) // Data buffer size in PDUs
 

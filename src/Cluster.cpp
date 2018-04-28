@@ -442,7 +442,7 @@ double Cluster::GetAvgTravelTime(void)
 	for (unsigned int i = 0; i < this->travels.size(); i++)
 		sum += this->travels.at(i);
 
-	return sum / this->travels.size();
+	return this->travels.size() > 0 ? sum / this->travels.size() : 0;
 }
 
 // Reset the travels vector
