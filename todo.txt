@@ -4,11 +4,9 @@
 - It seems that when a sensor has RL > 0 but no connectivity, it keeps
   generating data (that's OK) and flushes all the data at once when it gets
   connectivity (that's not OK).
-- Usar threads pra tela não escurecer no Ubuntu
-- Uma thread por cluster para posicionamento dos sinks pode ajudar no uso de
-  processadores multi-core
-- Fazer a programação dos sinks (que nem já existe para sensores).
-- Colocar no XML os parâmetros de energia dos sensores.
-- Colocar no XML a configuração de mudança de peso das vias.
-- Quando só tem um sensor pra transmitir dados e mais de um sink, todos os
-  sinks ficam na mesma posição. Corrigir.
+- Use threads to improve speed in multi-threaded architectures and avoid gray
+  scren in Ubuntu (maybe on thread per cluster)
+- Allow sinks programming in XML file (enable/disable sinks, move sinks, etc.)
+- Move sensors energy parameters from Node.h to network XML file
+- BUG: When there is only one sensor transmitting data and more than one sink,
+  all sinks move to the same position.
