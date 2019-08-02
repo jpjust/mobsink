@@ -1,6 +1,6 @@
 /*
  * MobSink Network modeling.
- * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2019 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *

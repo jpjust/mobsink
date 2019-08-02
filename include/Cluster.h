@@ -1,6 +1,6 @@
 /*
  * Cluster class for MobSink.
- * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2019 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -38,6 +38,7 @@ public:
 
     Sink *GetSink(void);
     Point *GetMean(void);
+    Point GetCenter(void);
     int GetRL(void);
     double GetPDUs(void);
     double GetDrops(void);
@@ -61,10 +62,10 @@ public:
 
     void SetMean(float x, float y);
     void MoveSink(float x, float y);
-    float MoveSinkDaniel(bool use_runtime_RL);
+    float MoveSinkDaniel(bool use_runtime_RL, float range);
     float WalkSink(Point dest);
     float UpdateMean(void);
-    float UpdateMeanDaniel(void);
+    float UpdateMeanDaniel(float range);
     void CleanLinks(void);
     void CreateLinks(float range);
     Node *FindNearestNode(Point p);

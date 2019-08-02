@@ -1,6 +1,6 @@
 /*
  * Cluster class for MobSink.
- * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2019 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -70,6 +70,26 @@ float Cluster::GetMovedPixels(void)
 vector<Point> Cluster::GetLastPath(void)
 {
     return this->last_path;
+}
+
+// Get a Point object representing the center of the cluster
+Point Cluster::GetCenter(void)
+{
+	// Initialize
+	float x_min = nodes.at(0)->GetX(), x_max = nodes.at(0)->GetX();
+	float y_min = nodes.at(0)->GetY(), y_max = nodes.at(0)->GetY();
+
+	for (unsigned int i = 1; i < nodes.size(); i++)
+	{
+		x_min = nodes.at(i)->GetX() < x_min ? nodes.at(i)->GetX() : x_min;
+		x_max = nodes.at(i)->GetX() > x_max ? nodes.at(i)->GetX() : x_max;
+		y_min = nodes.at(i)->GetY() < y_min ? nodes.at(i)->GetY() : y_min;
+		y_max = nodes.at(i)->GetY() > y_max ? nodes.at(i)->GetY() : y_max;
+	}
+
+	float x_center = (x_min + x_max) / 2;
+	float y_center = (y_min + y_max) / 2;
+	return Point(x_center, y_center);
 }
 
 // Sets the last path
@@ -180,7 +200,7 @@ void Cluster::MoveSink(float x, float y)
 }
 
 // Calculate position of the sink for this Cluster using Daniel's algorithm
-float Cluster::MoveSinkDaniel(bool use_runtime_RL)
+float Cluster::MoveSinkDaniel(bool use_runtime_RL, float range)
 {
     // Initialization
     int RL;
@@ -199,16 +219,27 @@ float Cluster::MoveSinkDaniel(bool use_runtime_RL)
         else
             RL = n->GetRL();
 
-        new_x += n->GetX() * RL;
-        new_y += n->GetY() * RL;
-        totalRL += RL;
+        // Calculate moving factor
+        float dist = n->Distance(*GetMean());
+        float prop = 1;
+        if (dist > 0 && dist < range)
+        	prop = dist / range;
+        float move_factor = RL * prop;
+        if (move_factor < 1)
+        	move_factor = 1;
+        printf("move_factor = %f\n", move_factor);
+
+        // Update new X and Y using the moving factor
+        new_x += n->GetX() * move_factor;
+        new_y += n->GetY() * move_factor;
+        totalRL += move_factor;
     }
 
     // If total relevance is zero, don't need to move sink
     if (totalRL == 0)
         return 0;
 
-    // Divide the coordinates by the total relevance and move the sink
+    // Divide the coordinates by the total relevance (moving factor) and move the sink
     new_x /= totalRL;
     new_y /= totalRL;
 
@@ -269,10 +300,9 @@ float Cluster::UpdateMean(void)
 }
 
 // Calculate position of the mean for this Cluster using Daniel's algorithm
-float Cluster::UpdateMeanDaniel(void)
+float Cluster::UpdateMeanDaniel(float range)
 {
     // Initialization
-    int RL;
     int totalRL = 0;
     float new_x = 0;
     float new_y = 0;
@@ -288,7 +318,7 @@ float Cluster::UpdateMeanDaniel(void)
             continue;
 
         RL = n->GetRL();
-        new_x += n->GetX() * RL;
+		new_x += n->GetX() * RL;
         new_y += n->GetY() * RL;
         totalRL += RL;
     }

@@ -1,6 +1,6 @@
 /*
  * MobSink Network modeling.
- * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2019 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -350,7 +350,6 @@ void Network::MeansInitializeRandom(void)
 
 void Network::MeansInitializeJust(void)
 {
-#define JUST_NEW_APPROACH
     static_sinks = false;
 
     // Insert sinks in an uniform manner
@@ -404,76 +403,6 @@ void Network::MeansInitializeJust(void)
     UpdateClusters();
     BalanceMeans();
     return;
-
-#ifndef JUST_NEW_APPROACH
-    // Initialization
-    bool node_used[nodes.size()];
-    Node *cur;
-    static_sinks = false;
-    unsigned int i;
-
-    for (i = 0; i < nodes.size(); i++)
-        node_used[i] = false;
-
-    // Distribute the nodes to the clusters
-    i = 0;
-    while (nodes.at(i)->GetRL() == 0)
-        i++;
-
-    nodes.at(i)->SetCluster(0);
-    clusters.at(0)->InsertNode(nodes.at(i));
-    node_used[i] = true;
-    cur = nodes.at(i);
-
-    for (i = 1; i < nodes.size(); i++)
-    {
-        // Find the farest not initialized node
-        float max_dist = -1;
-        int farest_node = i;
-
-        for (unsigned int j = 0; j < nodes.size(); j++)
-        {
-            // Check if this node was already used
-            if (node_used[j] || i == j)
-                continue;
-
-            // If this node has RL = 0, skip
-            if (nodes.at(j)->GetRL() == 0)
-                continue;
-
-            // Calculate the distance
-#ifdef JUST_RLBASED
-            float node_dist = cur->Distance(*nodes.at(j)) * nodes.at(j)->GetRL();
-#else
-            float node_dist = cur->Distance(*nodes.at(j));
-#endif
-
-            if (node_dist > max_dist)
-            {
-                max_dist = node_dist;
-                farest_node = j;
-            }
-        }
-
-        // Insert this node in the correct cluster
-        nodes.at(farest_node)->SetCluster(clusters.at(i % clusters.size()));
-        clusters.at(i % clusters.size())->InsertNode(nodes.at(farest_node));
-        node_used[farest_node] = true;
-        cur = nodes.at(farest_node);
-    }
-
-    // Set the means
-    for (unsigned int k = 0; k < clusters.size(); k++)
-    {
-        // Get a node of the same cluster to position the mean
-        if (clusters.at(k)->GetNodesCount() > 0)
-        {
-            Node *n = clusters.at(k)->GetNodeAt(0);
-            clusters.at(k)->GetMean()->SetX(n->GetX());
-            clusters.at(k)->GetMean()->SetY(n->GetY());
-        }
-    }
-#endif
 }
 
 // Run the k-means clustering algorithm to set the means until its positions no longer change
@@ -488,9 +417,10 @@ void Network::RunKmeans(void)
         delta_pos = 0;
 
         for (unsigned int k = 0; k < clusters.size(); k++)
-            delta_pos += clusters.at(k)->UpdateMeanDaniel();
+            delta_pos += clusters.at(k)->UpdateMeanDaniel(GetRange());
+        printf("GetRange() = %f\tdelta_pos = %f\n", GetRange(), delta_pos);
     }
-    while (delta_pos > 0);
+    while (delta_pos >= 1);
 }
 
 // Position the sinks and return whenever any of them has changed (use current time to calculate Dijkstra's path)
@@ -588,7 +518,7 @@ bool Network::PositionSinks(bool use_runtime_RL, int sinkpos, int t, bool use_tr
         for (unsigned int k = 0; k < clusters.size(); k++)
         {
             Vertex *src = G.InsertVertexAndConnect(prev_pos.at(k));
-            clusters.at(k)->MoveSinkDaniel(use_runtime_RL);
+            clusters.at(k)->MoveSinkDaniel(use_runtime_RL, GetRange());
 
             // To make sure no sink will be disconnected, we create the
             // links and verify if there is any disconnected sink. If we find
