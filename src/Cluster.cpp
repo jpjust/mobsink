@@ -225,9 +225,6 @@ float Cluster::MoveSinkDaniel(bool use_runtime_RL, float range)
         if (dist > 0 && dist < range)
         	prop = dist / range;
         float move_factor = RL * prop;
-        if (move_factor < 1)
-        	move_factor = 1;
-        printf("move_factor = %f\n", move_factor);
 
         // Update new X and Y using the moving factor
         new_x += n->GetX() * move_factor;
@@ -300,7 +297,7 @@ float Cluster::UpdateMean(void)
 }
 
 // Calculate position of the mean for this Cluster using Daniel's algorithm
-float Cluster::UpdateMeanDaniel(float range)
+float Cluster::UpdateMeanDaniel(void)
 {
     // Initialization
     int totalRL = 0;

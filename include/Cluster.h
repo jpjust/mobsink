@@ -65,7 +65,7 @@ public:
     float MoveSinkDaniel(bool use_runtime_RL, float range);
     float WalkSink(Point dest);
     float UpdateMean(void);
-    float UpdateMeanDaniel(float range);
+    float UpdateMeanDaniel(void);
     void CleanLinks(void);
     void CreateLinks(float range);
     Node *FindNearestNode(Point p);

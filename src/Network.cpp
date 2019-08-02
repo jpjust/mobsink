@@ -417,8 +417,7 @@ void Network::RunKmeans(void)
         delta_pos = 0;
 
         for (unsigned int k = 0; k < clusters.size(); k++)
-            delta_pos += clusters.at(k)->UpdateMeanDaniel(GetRange());
-        printf("GetRange() = %f\tdelta_pos = %f\n", GetRange(), delta_pos);
+            delta_pos += clusters.at(k)->UpdateMeanDaniel();
     }
     while (delta_pos >= 1);
 }
