@@ -1,6 +1,6 @@
 /*
  * Helper functions for MobSink.
- * Copyright (C) 2015-2016 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2019 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -28,4 +28,18 @@ void timesplit(unsigned int time_s, int &hours, int &minutes, int &seconds)
 
 	minutes = time_s / 60;
 	seconds = time_s % 60;
+}
+
+// Get resources directory
+wxString GetResDir(void)
+{
+#ifdef __WXMSW__	// Windows: return current executable dir
+	return APP_DIR;
+#else				// Linux: search for resource dir in prefix, otherwise, return executable dir
+	wxDir resdir(wxStandardPaths::Get().GetResourcesDir());
+	if (resdir.IsOpened())
+		return resdir.GetName();
+	else
+		return APP_DIR;
+#endif
 }

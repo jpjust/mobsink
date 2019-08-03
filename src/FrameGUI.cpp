@@ -1,6 +1,6 @@
 /*
  * MobSink Frame GUI.
- * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2019 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -71,38 +71,39 @@ FrameGUI::FrameGUI()
     comboInit->Append(wxT("Relevance based (Random)"));
     comboInit->Append(wxT("Relevance based (Just)"));
 
-    tbar1->AddTool(ID_TBAR_SENSOR,   wxT("Sensor"),   wxBitmap(wxT("png/tb_sensor.png"), wxBITMAP_TYPE_PNG),   wxT("Sensor adding tool"),   wxITEM_RADIO);
-    tbar1->AddTool(ID_TBAR_PATH,     wxT("Path"),     wxBitmap(wxT("png/tb_path.png"), wxBITMAP_TYPE_PNG),     wxT("Path adding tool"),     wxITEM_RADIO);
-    tbar1->AddTool(ID_TBAR_OBSTACLE, wxT("Obstacle"), wxBitmap(wxT("png/tb_obstacle.png"), wxBITMAP_TYPE_PNG), wxT("Obstacle adding tool"), wxITEM_RADIO);
+    tbar1->AddTool(ID_TBAR_SENSOR,   wxT("Sensor"),   wxBitmap(GetResDir() + wxT("/png/tb_sensor.png"), wxBITMAP_TYPE_PNG),   wxT("Sensor adding tool"),   wxITEM_RADIO);
+    tbar1->AddTool(ID_TBAR_PATH,     wxT("Path"),     wxBitmap(GetResDir() + wxT("/png/tb_path.png"), wxBITMAP_TYPE_PNG),     wxT("Path adding tool"),     wxITEM_RADIO);
+    tbar1->AddTool(ID_TBAR_OBSTACLE, wxT("Obstacle"), wxBitmap(GetResDir() + wxT("/png/tb_obstacle.png"), wxBITMAP_TYPE_PNG), wxT("Obstacle adding tool"), wxITEM_RADIO);
     tbar1->AddSeparator();
     tbar1->AddControl(lbSensors);
     tbar1->AddControl(txtNodes);
-    tbar1->AddTool(ID_TBAR_GRID,     wxT("Grid insert"),   wxBitmap(wxT("png/tb_grid.png"),        wxBITMAP_TYPE_PNG), wxT("Insert sensors in a grid manner"));
-    tbar1->AddTool(ID_TBAR_RANDOM,   wxT("Random insert"), wxBitmap(wxT("png/tb_sensor_rand.png"), wxBITMAP_TYPE_PNG), wxT("Insert sensors randomly"));
+    tbar1->AddTool(ID_TBAR_GRID,     wxT("Grid insert"),   wxBitmap(GetResDir() + wxT("/png/tb_grid.png"),        wxBITMAP_TYPE_PNG), wxT("Insert sensors in a grid manner"));
+    tbar1->AddTool(ID_TBAR_RANDOM,   wxT("Random insert"), wxBitmap(GetResDir() + wxT("/png/tb_sensor_rand.png"), wxBITMAP_TYPE_PNG), wxT("Insert sensors randomly"));
     tbar1->AddControl(lbRL);
     tbar1->AddControl(txtRL);
-    tbar1->AddTool(ID_TBAR_RANDRL,   wxT("Random RL"), wxBitmap(wxT("png/tb_random.png"), wxBITMAP_TYPE_PNG), wxT("Insert sensors with random RLs"), wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_RANDRL,   wxT("Random RL"), wxBitmap(GetResDir() + wxT("/png/tb_random.png"), wxBITMAP_TYPE_PNG), wxT("Insert sensors with random RLs"), wxITEM_CHECK);
     tbar1->AddSeparator();
-    tbar1->AddTool(ID_TBAR_RL,       wxT("Show RL"),          wxBitmap(wxT("png/tb_rl.png"),      wxBITMAP_TYPE_PNG), wxT("Display sensors RL"),     wxITEM_CHECK);
-    tbar1->AddTool(ID_TBAR_COORD,    wxT("Show coordinates"), wxBitmap(wxT("png/tb_coord.png"),   wxBITMAP_TYPE_PNG), wxT("Display coordinates"),    wxITEM_CHECK);
-    tbar1->AddTool(ID_TBAR_LINES,    wxT("Show links"),       wxBitmap(wxT("png/tb_links.png"),   wxBITMAP_TYPE_PNG), wxT("Display links"),          wxITEM_CHECK);
-    tbar1->AddTool(ID_TBAR_ENERGY,   wxT("Show energy"),      wxBitmap(wxT("png/tb_batt.png"),    wxBITMAP_TYPE_PNG), wxT("Display energy bars"),    wxITEM_CHECK);
-    tbar1->AddTool(ID_TBAR_ANIMATE,  wxT("Enable animation"), wxBitmap(wxT("png/tb_animate.png"), wxBITMAP_TYPE_PNG), wxT("Enable sinks animation"), wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_RL,       wxT("Show RL"),          wxBitmap(GetResDir() + wxT("/png/tb_rl.png"),      wxBITMAP_TYPE_PNG), wxT("Display sensors RL"),     wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_COORD,    wxT("Show coordinates"), wxBitmap(GetResDir() + wxT("/png/tb_coord.png"),   wxBITMAP_TYPE_PNG), wxT("Display coordinates"),    wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_LINES,    wxT("Show links"),       wxBitmap(GetResDir() + wxT("/png/tb_links.png"),   wxBITMAP_TYPE_PNG), wxT("Display links"),          wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_ENERGY,   wxT("Show energy"),      wxBitmap(GetResDir() + wxT("/png/tb_batt.png"),    wxBITMAP_TYPE_PNG), wxT("Display energy bars"),    wxITEM_CHECK);
+    tbar1->AddTool(ID_TBAR_ANIMATE,  wxT("Enable animation"), wxBitmap(GetResDir() + wxT("/png/tb_animate.png"), wxBITMAP_TYPE_PNG), wxT("Enable sinks animation"), wxITEM_CHECK);
     tbar1->AddSeparator();
     tbar1->AddControl(lbTime);
     tbar1->AddControl(txtTime);
-    tbar1->AddTool(ID_TBAR_SIM,      wxT("Start"), wxBitmap(wxT("png/tb_run.png"), wxBITMAP_TYPE_PNG), wxT("Start simulation"));
+    tbar1->AddTool(ID_TBAR_SIM,      wxT("Start"), wxBitmap(GetResDir() + wxT("/png/tb_run.png"), wxBITMAP_TYPE_PNG), wxT("Start simulation"));
     tbar1->AddSeparator();
-    tbar1->AddTool(ID_TBAR_HELP,     wxT("Help"),  wxBitmap(wxT("png/tb_help.png"),  wxBITMAP_TYPE_PNG), wxT("Go to MobSink website"));
-    tbar1->AddTool(ID_TBAR_ABOUT,    wxT("About"), wxBitmap(wxT("png/tb_about.png"), wxBITMAP_TYPE_PNG), wxT("About this software"));
+    tbar1->AddTool(ID_TBAR_HELP,     wxT("Help"),  wxBitmap(GetResDir() + wxT("/png/tb_help.png"),  wxBITMAP_TYPE_PNG), wxT("Go to MobSink website"));
+    tbar1->AddTool(ID_TBAR_ABOUT,    wxT("About"), wxBitmap(GetResDir() + wxT("/png/tb_about.png"), wxBITMAP_TYPE_PNG), wxT("About this software"));
     tbar1->Realize();
 
-    tbar2->AddTool(ID_TBAR_CLEAR,    wxT("Clear"), wxBitmap(wxT("png/tb_new.png"), wxBITMAP_TYPE_PNG), wxT("Clear WSN"));
-    tbar2->AddTool(ID_TBAR_LOADXML, wxT("Load WSN"), wxBitmap(wxT("png/tb_open_map.png"), wxBITMAP_TYPE_PNG), wxT("Load a XML file of a saved WSN"));
-    tbar2->AddTool(ID_TBAR_SAVEXML, wxT("Save WSN"), wxBitmap(wxT("png/tb_save_map.png"), wxBITMAP_TYPE_PNG), wxT("Save a XML file containing the current WSN"));
+    tbar2->AddTool(ID_TBAR_CLEAR,    wxT("Clear"), wxBitmap(GetResDir() + wxT("/png/tb_new.png"), wxBITMAP_TYPE_PNG), wxT("Clear WSN"));
+    tbar2->AddTool(ID_TBAR_LOADXML, wxT("Load WSN"), wxBitmap(GetResDir() + wxT("/png/tb_open_map.png"), wxBITMAP_TYPE_PNG), wxT("Load a XML file of a saved WSN"));
+    tbar2->AddTool(ID_TBAR_SAVEXML, wxT("Save WSN"), wxBitmap(GetResDir() + wxT("/png/tb_save_map.png"), wxBITMAP_TYPE_PNG), wxT("Save a XML file containing the current WSN"));
     tbar2->AddSeparator();
-    tbar2->AddTool(ID_TBAR_SAVEPNG, wxT("Save map"),    wxBitmap(wxT("png/tb_save_png.png"), wxBITMAP_TYPE_PNG), wxT("Save the current map in PNG format"));
-    tbar2->AddTool(ID_TBAR_SAVECSV, wxT("Save report"), wxBitmap(wxT("png/tb_save_csv.png"), wxBITMAP_TYPE_PNG), wxT("Save a report for the last simulation in CSV format"));
+    tbar2->AddTool(ID_TBAR_SAVEPNG, wxT("Save map"),    wxBitmap(GetResDir() + wxT("/png/tb_save_png.png"), wxBITMAP_TYPE_PNG), wxT("Save the current map in PNG format"));
+    tbar2->AddTool(ID_TBAR_SAVECSV, wxT("Save report"), wxBitmap(GetResDir() + wxT("/png/tb_save_csv.png"), wxBITMAP_TYPE_PNG), wxT("Save a report of the last simulation in CSV format"));
+    tbar2->AddTool(ID_TBAR_SAVEDAT, wxT("Save GNU Plot data"), wxBitmap(GetResDir() + wxT("/png/tb_save_dat.png"), wxBITMAP_TYPE_PNG), wxT("Save a report of the last simulation in GNU Plot .dat format"));
     tbar2->AddSeparator();
     tbar2->AddControl(lbRange);
     tbar2->AddControl(txtRange);
@@ -113,7 +114,7 @@ FrameGUI::FrameGUI()
     tbar2->AddControl(lbInit);
     tbar2->AddControl(comboInit);
     tbar2->AddSeparator();
-    tbar2->AddTool(ID_TBAR_RUN, wxT("Insert sink(s)"), wxBitmap(wxT("png/tb_sink.png"), wxBITMAP_TYPE_PNG), wxT("Insert sink(s) in WSN"));
+    tbar2->AddTool(ID_TBAR_RUN, wxT("Insert sink(s)"), wxBitmap(GetResDir() + wxT("/png/tb_sink.png"), wxBITMAP_TYPE_PNG), wxT("Insert sink(s) in WSN"));
     tbar2->Realize();
 
     // Create other widgets
@@ -143,7 +144,14 @@ FrameGUI::FrameGUI()
     SetSize(800, 600);
 
 #ifndef __WXMSW__
-    SetIcon(wxIcon(app_icon_xpm));
+    wxIconBundle *icons = new wxIconBundle();
+    icons->AddIcon(wxIcon(app_icon_xpm));
+    icons->AddIcon(GetResDir() + wxT("/icons/app_icon_16.png"), wxBITMAP_TYPE_PNG);
+    icons->AddIcon(GetResDir() + wxT("/icons/app_icon_32.png"), wxBITMAP_TYPE_PNG);
+    icons->AddIcon(GetResDir() + wxT("/icons/app_icon_48.png"), wxBITMAP_TYPE_PNG);
+    icons->AddIcon(GetResDir() + wxT("/icons/app_icon_64.png"), wxBITMAP_TYPE_PNG);
+    icons->AddIcon(GetResDir() + wxT("/icons/app_icon_128.png"), wxBITMAP_TYPE_PNG);
+    SetIcons(*icons);
 #else
     SetIcon(wxIcon("aaaaaa"));
 #endif
@@ -176,6 +184,12 @@ void FrameGUI::SetRange(float range)
 void FrameGUI::SetTime(int time)
 {
     txtTime->SetValue(wxString::Format(wxT("%d"), time));
+}
+
+// Return the simulation time in the textbox
+int FrameGUI::GetTime(void)
+{
+    return atoi(txtTime->GetValue().char_str());
 }
 
 // Print text to the output control
@@ -293,6 +307,22 @@ void FrameGUI::SaveCSV(wxCommandEvent &event)
             return;
 
         pnNet->SaveCSV(filename);
+    }
+}
+
+// Save output data to a GNU Plot .dat file
+void FrameGUI::SaveDAT(wxCommandEvent &event)
+{
+    wxString filename = wxFileSelector(wxT("Save output"), pathDAT, wxEmptyString, wxT("dat"),
+                                       wxT("DAT file (*.dat)|*.dat|All files|*.*"), wxFD_SAVE, this);
+
+    if (!filename.empty())
+    {
+        if (wxFileExists(filename) &&
+                (wxMessageBox(wxT("File \"") + filename + wxT("\" already exists. Overwrite it?"), APP_NAME, wxYES_NO | wxICON_QUESTION) == wxNO))
+            return;
+
+        pnNet->SaveDAT(filename);
     }
 }
 
@@ -419,6 +449,10 @@ void FrameGUI::OnToolBarClick(wxCommandEvent &event)
 
     case ID_TBAR_SAVECSV:
     	SaveCSV(event);
+    	break;
+
+    case ID_TBAR_SAVEDAT:
+    	SaveDAT(event);
     	break;
 
     case ID_TBAR_LOADXML:

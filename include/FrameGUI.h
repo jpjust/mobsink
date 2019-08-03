@@ -1,6 +1,6 @@
 /*
  * MobSink Frame GUI.
- * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2019 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -44,6 +44,7 @@ enum
     ID_TBAR_HELP,
 	ID_TBAR_RUN,
 	ID_TBAR_SAVECSV,
+	ID_TBAR_SAVEDAT,
 	ID_TBAR_LOADXML,
 	ID_TBAR_SAVEXML,
 	ID_TBAR_SAVEPNG,
@@ -56,6 +57,7 @@ public:
     int GetRL(void);
     float GetRange(void);
     void SetRange(float range);
+    int GetTime(void);
     void SetTime(int time);
     void PrintOutput(wxString text);
     void StartCmdlineSim(wxString file_net, wxString file_out, int n_sinks, int init, bool use_traffic);
@@ -80,6 +82,7 @@ private:
 
     // File dialogs paths
     wxString pathCSV;
+    wxString pathDAT;
     wxString pathXML;
     wxString pathPNG;
 
@@ -95,6 +98,7 @@ private:
     void GridSinks(void);
     void Simulate(wxCommandEvent &event);
     void SaveCSV(wxCommandEvent &event);
+    void SaveDAT(wxCommandEvent &event);
     void LoadXML(wxCommandEvent &event);
     void SaveXML(wxCommandEvent &event);
     void SavePNG(wxCommandEvent &event);

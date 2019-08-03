@@ -1,6 +1,6 @@
 /*
  * LARA MobSink Multiple Sinks Simulator.
- * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2019 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -32,7 +32,6 @@ bool MMSApp::OnInit()
     SetVendorName(APP_VENDOR);
     wxSetWorkingDirectory(APP_DIR);
     srand(time(NULL)); // Seed the rand() for future use
-    wxLocale app_locale(wxLANGUAGE_ENGLISH_US);
     wxInitAllImageHandlers();
 
     // Instantiate the frame and start the GUI or run via command line

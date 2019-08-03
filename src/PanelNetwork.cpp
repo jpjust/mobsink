@@ -1,6 +1,6 @@
 /*
  * MobSink network panel GUI.
- * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2019 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -268,7 +268,7 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     if (animate)
         parent->PrintOutput(wxString::Format(wxT("t = 0, J = 0, Active: %lu\n"), nodes.size()));
 
-    details.Append(wxString::Format(wxT("%d;%.2f;%d\n"), t, energy, active));
+    details.Append(wxString::Format(wxT("%d;%.2f;%d;%.0f;%.0f\n"), t, energy, active, total_pdus, total_drops));
 
     // Start simulation
     do
@@ -424,6 +424,11 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
 
     file_output.Append(wxT("\n\nDETAILS\nt;Energy;Active nodes;PDUs;Dropped PDUs\n"));
     file_output.Append(details);
+
+    // DAT output
+    dat_output = wxT("# t Energy Active_nodes PDUs Dropped_PDUs\n");
+    dat_output.Append(details);
+    dat_output.Replace(wxT(";"), wxT(" "), true);
 
     // Average of hops used for each sensor
     file_output.Append(wxT("\n\nAVERAGE HOPS PER SENSOR\n"));
@@ -764,6 +769,23 @@ bool PanelNetwork::SaveCSV(wxString filename)
     return true;
 }
 
+// Save file_output to GNU Plot .dat format
+bool PanelNetwork::SaveDAT(wxString filename)
+{
+    FILE *fd = fopen(filename.char_str(), "w");
+
+    if (fd == NULL)
+    {
+        wxMessageBox(wxT("Couldn't open ") + filename + wxT(" for writing."), APP_NAME, wxICON_ERROR);
+        return false;
+    }
+
+    fputs(dat_output.char_str(), fd);
+    fclose(fd);
+
+    return true;
+}
+
 // Load a network setup from a XML file
 bool PanelNetwork::LoadXML(wxString filename)
 {
@@ -934,7 +956,10 @@ bool PanelNetwork::SaveXML(wxString filename)
 
     // Insert map size
     int width, height;
+    FrameGUI *parent = (FrameGUI *)GetParent();
     GetVirtualSize(&width, &height);
+    root->AddAttribute(wxT("txrange"), wxString::Format(wxT("%.0f"), parent->GetRange()));
+    root->AddAttribute(wxT("time"), wxString::Format(wxT("%d"), parent->GetTime()));
     root->AddAttribute(wxT("width"), wxString::Format(wxT("%d"), width));
     root->AddAttribute(wxT("height"), wxString::Format(wxT("%d"), height));
 

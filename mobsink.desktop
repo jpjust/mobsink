@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=LARA MobSink
+Comment=LARA MobSink Multiple Sinks Simulator
+Exec=mobsink
+Icon=/usr/local/share/mobsink/icons/app_icon.xpm

@@ -1,6 +1,6 @@
 /*
  * MobSink network panel GUI.
- * Copyright (C) 2015-2018 João Paulo Just Peixoto <just1982@gmail.com>.
+ * Copyright (C) 2015-2019 João Paulo Just Peixoto <just1982@gmail.com>.
  *
  * This file is part of MobSink.
  *
@@ -110,6 +110,7 @@ public:
     bool SavePNG(wxString filename);
     void RunSim(int init, int s_time, bool use_traffic);
     bool SaveCSV(wxString filename);
+    bool SaveDAT(wxString filename);
     bool LoadXML(wxString filename);
     bool SaveXML(wxString filename);
     void SetTool(panel_tools tool);
@@ -120,6 +121,7 @@ private:
     Network wsn;
     wxString file_output;
     wxString moves_output;
+    wxString dat_output;
     panel_tools tool;
     Point *path_pa;
     Point mouse_point;

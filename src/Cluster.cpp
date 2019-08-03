@@ -222,9 +222,11 @@ float Cluster::MoveSinkDaniel(bool use_runtime_RL, float range)
         // Calculate moving factor
         float dist = n->Distance(*GetMean());
         float prop = 1;
-        if (dist > 0 && dist < range)
-        	prop = dist / range;
+        if (dist < range)
+        	prop = 0.5 + 0.5 * dist / range;	// No less than half of the RL
         float move_factor = RL * prop;
+        if (move_factor < 1)
+        	move_factor = 1;					// No less than 1
 
         // Update new X and Y using the moving factor
         new_x += n->GetX() * move_factor;

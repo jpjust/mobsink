@@ -22,6 +22,7 @@
 #define APPDEFS_H_INCLUDED
 
 #include <wx/stdpaths.h>
+#include <wx/dir.h>
 
 // Application name and version
 #ifdef DEBUG
@@ -41,5 +42,8 @@
 
 // Time conversion from seconds to hour, minutes and seconds
 void timesplit(unsigned int time_s, int &hours, int &minutes, int &seconds);
+
+// Get the resources directory
+wxString GetResDir(void);
 
 #endif // APPDEFS_H_INCLUDED
