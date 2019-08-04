@@ -36,13 +36,13 @@ class Vertex;
 class Edge
 {
 public:
-    Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control, float speedlimit = 0) throw(edge_exception);
+    Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control, float speedlimit = 0);
     bool operator==(Edge e);
 
     Vertex *GetSource(void);
     Vertex *GetDestination(void);
-    void SetSource(Vertex *src) throw(edge_exception);
-    void SetDestination(Vertex *dst) throw(edge_exception);
+    void SetSource(Vertex *src);
+    void SetDestination(Vertex *dst);
     void SetPathControl(map<int, struct path_control_params> *path_control);
     map<int, struct path_control_params> *GetPathControl(void);
 

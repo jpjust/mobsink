@@ -268,7 +268,7 @@ void PanelNetwork::RunSim(int init, int s_time, bool use_traffic)
     if (animate)
         parent->PrintOutput(wxString::Format(wxT("t = 0, J = 0, Active: %lu\n"), nodes.size()));
 
-    details.Append(wxString::Format(wxT("%d;%.2f;%d;%.0f;%.0f\n"), t, energy, active, total_pdus, total_drops));
+    details.Append(wxT("0;0.00;0;0;0\n"));
 
     // Start simulation
     do

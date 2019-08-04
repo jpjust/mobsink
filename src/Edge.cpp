@@ -23,7 +23,7 @@
 #include "Edge.h"
 
 // Default constructor
-Edge::Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control, float speedlimit) throw(edge_exception)
+Edge::Edge(Vertex *src, Vertex *dst, map<int, struct path_control_params> *path_control, float speedlimit)
 {
     try
     {
@@ -55,7 +55,7 @@ Vertex *Edge::GetDestination(void)
     return this->dst;
 }
 
-void Edge::SetSource(Vertex *src) throw(edge_exception)
+void Edge::SetSource(Vertex *src)
 {
     if (src != NULL)
         this->src = src;
@@ -63,7 +63,7 @@ void Edge::SetSource(Vertex *src) throw(edge_exception)
         throw EX_EDGE_INVALID_SRC;
 }
 
-void Edge::SetDestination(Vertex *dst) throw(edge_exception)
+void Edge::SetDestination(Vertex *dst)
 {
     if (dst != NULL)
         this->dst = dst;

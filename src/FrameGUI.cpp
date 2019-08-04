@@ -475,8 +475,6 @@ void FrameGUI::OnToolBarClick(wxCommandEvent &event)
 // Start a simulation via command line arguments
 void FrameGUI::StartCmdlineSim(wxString file_net, wxString file_out, int n_sinks, int init, bool use_traffic)
 {
-if (pnNet == NULL)
-    wxPrintf(wxT("NULLLLLLLLLLLLLLLLLLLLL\n\n\n\n"));
     // Load network file
     if (pnNet->LoadXML(file_net) == false)
         wxPrintf(wxT("There was an error trying to load \"%s\". Exiting...\n"), file_net.c_str());

@@ -28,9 +28,8 @@ bool MMSApp::OnInit()
     if (!wxApp::OnInit())
         return false;
 
-    SetAppName(APP_NAME);
-    SetVendorName(APP_VENDOR);
-    wxSetWorkingDirectory(APP_DIR);
+    SetAppDisplayName(APP_NAME);
+    SetVendorDisplayName(APP_VENDOR);
     srand(time(NULL)); // Seed the rand() for future use
     wxInitAllImageHandlers();
 
