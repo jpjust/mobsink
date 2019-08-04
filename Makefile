@@ -1,6 +1,8 @@
 EXECUTABLE=mobsink
 INSTDIR=/usr/bin
-SHAREDIR=/usr/share/mobsink
+SHAREDIR=/usr/share
+RESDIR=${SHAREDIR}/mobsink
+DESKTOPDIR=${SHAREDIR}/applications
 
 ifneq (${BUILD}, Debug)
 	BUILD=Release
@@ -18,15 +20,17 @@ clean:
 
 install:
 	@echo 'Installing a ${BUILD} build...'
-	mkdir -p ${SHAREDIR}/icons
-	mkdir -p ${SHAREDIR}/png
-	cp -a res/ico/* ${SHAREDIR}/icons/
-	cp -a res/png/* ${SHAREDIR}/png/
+	mkdir -p ${RESDIR}/icons
+	mkdir -p ${RESDIR}/png
+	cp -a res/ico/* ${RESDIR}/icons/
+	cp -a res/png/* ${RESDIR}/png/
 	cp  ${BUILD}/${EXECUTABLE} ${INSTDIR}/
+	cp mobsink.desktop ${DESKTOPDIR}/
 	@echo 'Done! MobSink installed in ${INSTDIR}/${EXECUTABLE}'
 
 uninstall:
 	@echo 'Uninstalling...'
-	rm -rf ${SHAREDIR}
+	rm -rf ${RESDIR}
+	rm -rf ${DESKTOPDIR}/mobsink.desktop
 	rm -rf ${INSTDIR}/${EXECUTABLE}
 	@echo 'Done!'
